@@ -1,9 +1,14 @@
 package org.clubol.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Runner {
@@ -12,11 +17,25 @@ public class Runner {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String document;
+	private Long position;
 	private String firstName;
 	private String lastName;
 	private Long age;
 	private String phone;
 	private String cellPhone;
+
+	@OneToOne(targetEntity=Category.class)
+	private Category category;
+	
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	@OneToMany(cascade = CascadeType.ALL,targetEntity=Tags.class)
+	private List<Tags> tags ;
+	
 	public Long getId() {
 		return id;
 	}
@@ -60,6 +79,20 @@ public class Runner {
 		this.cellPhone = cellPhone;
 	}
 	
+	
+	
+	public List<Tags> getTags() {
+		return tags;
+	}
+	public void setTags(List<Tags> tags) {
+		this.tags = tags;
+	}
+	public Long getPosition() {
+		return position;
+	}
+	public void setPosition(Long position) {
+		this.position = position;
+	}
 	@Override
     public String toString() {
         return String.format(
