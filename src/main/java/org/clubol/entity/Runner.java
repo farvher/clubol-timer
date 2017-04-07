@@ -17,7 +17,7 @@ public class Runner {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String document;
-	private Long position;
+	
 	private String firstName;
 	private String lastName;
 	private Long age;
@@ -87,12 +87,8 @@ public class Runner {
 	public void setTags(List<Tags> tags) {
 		this.tags = tags;
 	}
-	public Long getPosition() {
-		return position;
-	}
-	public void setPosition(Long position) {
-		this.position = position;
-	}
+	
+	
 	@Override
     public String toString() {
         return String.format(

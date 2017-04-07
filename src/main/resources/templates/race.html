@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+
+	<div>
+	<div>
+	<label>Gun Time</label> 
+	<div id="gunTime" th:utext="${gunTime}">gunTime</div>
+	
+	<label>Date</label>
+	<div id="dateRace" th:utext="${dateRace}">dateRace</div>
+	</div>
+	<table class="table table-bordered table-condensed table-striped">
+		<tr>
+			<td>Document</td>
+			<td>first name</td>
+			<td>last name</td>
+			<td>position (tagNo)</td>
+			<td>Time</td>
+			<td>Category</td>
+			
+		</tr>
+		<tr th:each=" r : ${runners}">
+			<td th:text="${r.document}">Document</td>
+			<td th:text="${r.firstName}">first name</td>
+			<td th:text="${r.lastName}">last name</td>
+			<td th:text="${r.age}">age</td>
+			<td th:text="${r.phone}">phone</td>
+			<td th:text="${r.cellPhone}">cell phone</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

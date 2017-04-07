@@ -17,9 +17,7 @@ public class Tags {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	
-	@ManyToOne(optional = false,targetEntity=Runner.class)
-	@JoinColumn(name = "runner", referencedColumnName = "position")
+
 	private Long noTag;
 	
 	private String time;
