@@ -82,17 +82,7 @@ public class RaceDto implements Serializable {
 		this.position = position;
 	}
 	
-	public static RaceDto EntityToRace(Runner runner){
-		
-		RaceDto raceDto = new RaceDto();
-		raceDto.setDocument(runner.getDocument());
-		raceDto.setCategory(runner.getCategory().getName());
-		raceDto.setFirstName(runner.getFirstName());
-		raceDto.setLastName(runner.getLastName());
-		
-		
-		return raceDto;
-	}
+
 	
 	
 	

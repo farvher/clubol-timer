@@ -17,16 +17,14 @@ public class Tags {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-
 	private Long noTag;
 	
 	private String time;
 	
 	private Long noAerial;
 	
-	private String gunTime;
 	
-	private Date runDate;
+	private String runDate;
 
 	public Long getId() {
 		return id;
@@ -60,19 +58,12 @@ public class Tags {
 		this.noAerial = noAerial;
 	}
 
-	public String getGunTime() {
-		return gunTime;
-	}
 
-	public void setGunTime(String gunTime) {
-		this.gunTime = gunTime;
-	}
-
-	public Date getRunDate() {
+	public String getRunDate() {
 		return runDate;
 	}
 
-	public void setRunDate(Date runDate) {
+	public void setRunDate(String runDate) {
 		this.runDate = runDate;
 	}
 	
