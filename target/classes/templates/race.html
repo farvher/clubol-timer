@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<div th:replace="header :: cabezote"></div>
+
+	<div>
+		<div>
+
+
+			<label>Date</label>
+			<div id="dateRace" th:utext="${dateRace}">dateRace</div>
+		</div>
+		<table class="table table-bordered table-condensed table-striped" >
+			<tr>
+				<th>No tag</th>
+				<th>Time</th>
+				<th>Antena</th>
+				<th>run date</th>
+
+			</tr>
+			<tbody id="tableRace">
+			<tr th:each=" t : ${tags}" >
+				<td th:text="${t.noTag}">tag</td>
+				<td th:text="${t.time}">time</td>
+				<td th:text="${t.noAerial}">antena</td>
+				<td th:text="${t.runDate}">run date</td>
+
+			</tr>
+			</tbody>
+			
+		</table>
+	</div>
+
+	<script>
+
+function updateTable(){
+
+	var url ="/race/ajax"
+	$.ajax({
+		url : url,
+		dataType : "json",
+		success:function(data){
+			$("#tableRace").html("");
+			$.each(data,function(i,o){
+				var register = "<tr>";
+				register+="<td>"+o.noTag+"</td>";
+				register+="<td>"+o.time+"</td>";
+				register+="<td>"+o.noAerial+"</td>";
+				register+="<td>"+o.runDate+"</td>";
+				register+="</tr>";
+				$("#tableRace").append(register);
+				})
+			
+       data;
+			},
+		error:function(){
+             	console.log("menu no cargado");
+             }
+		})
+}
+setInterval(updateTable, 1000);
+
+</script>
+</body>
+</html>
