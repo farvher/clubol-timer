@@ -1,0 +1,16 @@
+org\clubol\controller\RunnerController.class
+org\clubol\dao\TagsRepository.class
+org\clubol\entity\Category.class
+org\clubol\entity\Tags.class
+org\clubol\dao\RunnerRepository.class
+org\clubol\dto\RaceDto.class
+org\clubol\controller\HomeController.class
+org\clubol\controller\RaceController.class
+org\clubol\entity\Runner.class
+org\clubol\controller\TagsController.class
+org\clubol\services\TagsServiceImpl.class
+org\clubol\services\RunnerServiceImpl.class
+org\clubol\dao\CategoryRepository.class
+org\clubol\ClubolTimerApplication.class
+org\clubol\services\TagsService.class
+org\clubol\services\RunnerService.class
