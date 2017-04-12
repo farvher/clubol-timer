@@ -9,8 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RunnerRepository extends JpaRepository<Runner,Long>{
+public interface RunnerRepository extends JpaRepository<Runner, Long> {
 
 	List<Runner> findByLastName(String lastName);
-	
+
+	List<Runner> findByDocumentOrFirstNameOrLastName(String document,String firtsName, String lastName);
+
+	List<Runner> findByPosition(Long position);
+
 }

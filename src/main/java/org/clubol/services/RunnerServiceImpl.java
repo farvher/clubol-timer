@@ -29,4 +29,14 @@ public class RunnerServiceImpl  implements RunnerService{
 		return runnerRepository.findAll();
 	}
 
+	@Override
+	public List<Runner> findByDocumentOrFirstNameOrLastName(String document, String firtsName, String lastName) {
+		return runnerRepository.findByDocumentOrFirstNameOrLastName(document, firtsName, lastName);
+	}
+
+	@Override
+	public List<Runner> findByPosition(Long position) {
+		return runnerRepository.findByPosition(position);
+	}
+
 }

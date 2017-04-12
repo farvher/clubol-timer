@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<div th:replace="header :: cabezote"></div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h1>Nuevo Corredor</h1>
+			<div th:fragment="newRunner">
+
+				<form th:action="@{/runner/save}" th:object="${newRunner}"
+					method="POST">
+					<div class="form-group">
+						No Chip : <input type="number" class="form-control"
+							th:required="required" th:field="*{position}" />
+					</div>
+
+					<div class="form-group">
+						Documento : <input type="text" class="form-control"
+							th:required="required" th:field="*{document}" />
+					</div>
+					<div class="form-group">
+						Nombres : <input type="text" class="form-control"
+							th:required="required" th:field="*{firstName}" />
+					</div>
+					<div class="form-group">
+						Apellidos : <input type="text" class="form-control"
+							th:required="required" th:field="*{lastName}" />
+					</div>
+					<div class="form-group">
+						Edad : <input type="number" class="form-control"
+							th:required="required" th:field="*{age}" />
+					</div>
+					<div class="form-group">Distancia :</div>
+					<div class="form-group">Categoria :</div>
+					<div class="form-group">
+						Genero : <select th:field="*{gender}" class="form-control">
+							<option th:value="male" th:text="Masculino">Masculino</option>
+							<option th:value="female" th:text="Femenino">Masculino</option>
+						</select>
+					</div>
+					<div class="form-group">
+						Telefono : <input type="text" class="form-control"
+							th:required="required" th:field="*{cellPhone}" />
+					</div>
+					<div class="form-group">
+						Email : <input type="text" class="form-control"
+							th:required="required" th:field="*{email}" />
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-default"
+							value="Guardar corredor" />
+					</div>
+
+
+				</form>
+
+			</div>
+		</div>
+
+
+		<!-- <td>Documento</td> -->
+		<!-- 		<td>Nombres</td> -->
+		<!-- 		<td>Apellidos</td> -->
+		<!-- 		<td>Edad</td> -->
+
+		<!-- <!-- 		datos de categoria -->
+		<!-- 		<td>Distancia</td> -->
+		<!-- 		<td>Categoria</td> -->
+		<!-- 		<td>Genero</td> -->
+
+
+	</div>
+
+
+</body>
+</html>

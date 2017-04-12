@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<div th:replace="header :: cabezote"></div>
+	
+	
+	<div th:fragment="runners">
+		<div>
+			<label>Corredores</label>
+		</div>
+		<div >
+		buscar corredor : <input type="text" id="searchRunner" placeholder="Nombre, Apellido, Documento..."/>
+		Nuevo corredor : 
+		</div>
+		
+		
+		<table  id="tableRunners" class="table table-striped table-bordered table-condensed">
+		
+		<thead>
+		<tr>
+		<td>Chip id</td>
+		<td>Documento</td>
+		<td>Nombres</td>
+		<td>Apellidos</td>
+		<td>Edad</td>
+		
+<!-- 		datos de categoria -->
+		<td>Distancia</td>
+		<td>Categoria</td>
+		<td>Genero</td>
+		
+		<td>Activo</td>
+		<td> </td>
+		
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="r : ${runners}">
+		<td></td>
+		</tr>
+		</tbody>
+		
+		</table>
+		
+		
+
+
+	</div>
+
+
+</body>
+</html>

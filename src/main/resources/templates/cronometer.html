@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div th:fragment="cronometer">
+		<div>
+			<label>Date</label>
+			<div id="dateRace" th:utext="${dateRace}">dateRace</div>
+		</div>
+
+		<div th:each=" c: ${cronos}"></div>
+
+		<div>
+			<input type="button" value="Nuevo Cronometro" id="addCrono" />
+		</div>
+
+
+	</div>
+
+
+</body>
+</html>

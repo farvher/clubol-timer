@@ -12,4 +12,11 @@ public interface RunnerService {
 	
 	List<Runner> findAll();
 
+	List<Runner> findByDocumentOrFirstNameOrLastName(String document,String firtsName, String lastName);
+
+	List<Runner> findByPosition(Long position);
+	
+	
+	
+
 }
