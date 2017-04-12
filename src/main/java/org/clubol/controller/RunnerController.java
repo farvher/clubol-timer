@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class RunnerController {
 
+	private static final String VIEW_RUNNER ="runners";
 	
 	@Autowired
 	private RunnerService runnerService;
@@ -26,9 +27,12 @@ public class RunnerController {
 	}
 	
 	@RequestMapping(value = "/runner/save" , method = RequestMethod.POST)
-	public String saveRunner(@ModelAttribute Runner newRunner){
+	public String saveRunner(@ModelAttribute Runner newRunner,Model model){
 		runnerService.saveRunner(newRunner);
-		return "redirect:/runners";
+		model.addAttribute("message", "Corredor "+newRunner.getFirstName() + " guardado.");
+		model.addAttribute("runners",runnerService.findAll());
+		model.addAttribute("newRunner", new Runner());
+		return VIEW_RUNNER;
 	}
 	
 	
@@ -38,7 +42,7 @@ public class RunnerController {
 		model.addAttribute("runners",runnerService.findAll());
 		model.addAttribute("newRunner", new Runner());
 		
-		return "runners";
+		return VIEW_RUNNER;
 	}
 	
 	
@@ -46,16 +50,21 @@ public class RunnerController {
 	public String getRunnersByField(Model model , @PathVariable String key){
 		model.addAttribute("runners",runnerService.findByDocumentOrFirstNameOrLastName(key, key, key));
 		model.addAttribute("newRunner", new Runner());
-		return "runners";
+		return VIEW_RUNNER;
 	}
 	
 	@RequestMapping(value ="/runners/tag/{tag}")
 	public String getRunnerByPosition(Model model, @PathVariable Long tag){
-		
 		model.addAttribute("runners",runnerService.findByPosition(tag));
 		model.addAttribute("newRunner", new Runner());
-		
-		return "runners";
+		return VIEW_RUNNER;
 	}
+
+	@RequestMapping(value="/runner/delete/{id}")
+	public String disableRunner(Model model,@PathVariable Long id){
+		runnerService.disableRunner(id);
+		return "redirect:/runners";
+	}
+	
 	
 }

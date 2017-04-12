@@ -24,24 +24,15 @@ public class Runner {
 	private String lastName;
 	private Long age;
 	private String email;
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	private String cellPhone;
-	
 	private String category;
 	private String gender;
 	private String distance;
 
 	private Long position;
-	
-	@Column(columnDefinition="tinyint(1) default 1")
-	private boolean activo;
+
+	@Column(columnDefinition = "tinyint(1) default 1")
+	private boolean active;
 
 	public Long getId() {
 		return id;
@@ -83,7 +74,6 @@ public class Runner {
 		this.age = age;
 	}
 
-
 	public String getCellPhone() {
 		return cellPhone;
 	}
@@ -91,7 +81,6 @@ public class Runner {
 	public void setCellPhone(String cellPhone) {
 		this.cellPhone = cellPhone;
 	}
-
 
 	public String getCategory() {
 		return category;
@@ -123,6 +112,24 @@ public class Runner {
 
 	public void setPosition(Long position) {
 		this.position = position;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
+	
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override

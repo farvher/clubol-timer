@@ -39,4 +39,10 @@ public class RunnerServiceImpl  implements RunnerService{
 		return runnerRepository.findByPosition(position);
 	}
 
+	@Override
+	public void disableRunner(Long id) {
+		runnerRepository.getOne(id).setActive(false);
+		
+	}
+
 }

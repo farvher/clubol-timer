@@ -7,50 +7,76 @@
 <body>
 
 	<div th:replace="header :: cabezote"></div>
-	
-	
-	<div th:fragment="runners">
-		<div>
-			<label>Corredores</label>
-		</div>
-		<div >
-		buscar corredor : <input type="text" id="searchRunner" placeholder="Nombre, Apellido, Documento..."/>
-		Nuevo corredor : 
-		</div>
-		
-		
-		<table  id="tableRunners" class="table table-striped table-bordered table-condensed">
-		
-		<thead>
-		<tr>
-		<td>Chip id</td>
-		<td>Documento</td>
-		<td>Nombres</td>
-		<td>Apellidos</td>
-		<td>Edad</td>
-		
-<!-- 		datos de categoria -->
-		<td>Distancia</td>
-		<td>Categoria</td>
-		<td>Genero</td>
-		
-		<td>Activo</td>
-		<td> </td>
-		
-		</tr>
-		</thead>
-		<tbody>
-		<tr th:each="r : ${runners}">
-		<td></td>
-		</tr>
-		</tbody>
-		
-		</table>
-		
-		
 
+
+	<div th:fragment="runners" class="panel panel-default">
+
+		<h3>Corredores</h3>
+		<div class="form-group">
+			<input type="text"
+				id="searchRunner" name="searchRunner" class="form-control"
+				placeholder="Buscar por Nombre, Apellido o Documento " maxlength="40"
+				th:required="required" /> <input type="button"
+				class="btn btn-default" value="Buscar" onclick="searchRunner()" />
+		</div>
+
+
+		<table id="tableRunners" class="table table-bordered table-responsive">
+
+			<thead>
+				<tr>
+					<th>Chip id</th>
+					<th>Documento</th>
+					<th>Nombres</th>
+					<th>Apellidos</th>
+					<th>Edad</th>
+					<th>Email</th>
+					<th>Telefono</th>
+
+					<!-- 		datos de categoria -->
+					<th>Distancia</th>
+					<th>Categoria</th>
+					<th>Genero</th>
+
+					<th>Activo</th>
+					<th></th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="r : ${runners}">
+					<td th:text="${r.position}">Chip id</td>
+					<td th:text="${r.document}">Documento</td>
+					<td th:text="${r.firstName}">Nombres</td>
+					<td th:text="${r.lastName}">Apellidos</td>
+					<td th:text="${r.age}">Edad</td>
+					<td th:text="${r.email}">Email</td>
+					<td th:text="${r.cellPhone}">Telefono</td>
+
+					<!-- 		datos de categoria -->
+					<td th:text="${r.distance}">Distancia</td>
+					<td th:text="${r.category}">Categoria</td>
+					<td th:text="${r.gender}">Genero</td>
+
+					<td th:text="${r.active}">Activo</td>
+					<td></td>
+				</tr>
+			</tbody>
+
+		</table>
 
 	</div>
+	<script>
+ function searchRunner(){
+	var key = $("#searchRunner").val();
+	if(key!=""){
+	window.location.href="/runners/"+key;
+		}
+	
+	 }
+	</script>
+
+
 
 
 </body>
