@@ -1,6 +1,7 @@
 package org.clubol.controller;
 
 import org.clubol.entity.Runner;
+import org.clubol.services.RaceService;
 import org.clubol.services.RunnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,20 +16,13 @@ public class HomeController {
 	@Autowired
 	private RunnerService runnerService;
 
-	@RequestMapping("/greeting")
-	public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name,
-			Model model) {
-		
-		model.addAttribute("name", name);
-		model.addAttribute("runner", new Runner());
-		model.addAttribute("runners",runnerService.findAll());
-		
-		return "greeting";
-	}
+	@Autowired
+	private RaceService raceService;
 	
 	@RequestMapping("/")
-	public String index(){
+	public String index(Model model){
 		
+		model.addAttribute("races",raceService.findAll());
 		return "index";
 	}
 	

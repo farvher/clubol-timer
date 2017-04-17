@@ -9,13 +9,21 @@
 	<div th:replace="header :: cabezote"></div>
 
 	<div>
-		<div>
+		<div th:if="${race}!=null" class="well">
+			<h2 th:text="${race.raceName}">Carrera</h2>
+			<label th:text="${race.description}">descripcion</label>
+			<div id="dateRace" th:utext="${race.dateRace}">dateRace</div>
+			<div class="btn-group btn-group-lg"> 
+				<p th:each="cr : ${race.chronometers}" >
+					<label th:text="${cr.chronometerName}"></label>
+					<label th:text="${cr.timeStart}"></label>
+					<label th:text="${cr.timeEnd}"></label>
+				</p>
+			</div>
 
 
-			<label>Date</label>
-			<div id="dateRace" th:utext="${dateRace}">dateRace</div>
 		</div>
-		<table class="table table-bordered table-condensed table-striped" >
+		<table class="table table-bordered table-condensed table-striped">
 			<tr>
 				<th>No tag</th>
 				<th>Time</th>
@@ -24,15 +32,15 @@
 
 			</tr>
 			<tbody id="tableRace">
-			<tr th:each=" t : ${tags}" >
-				<td th:text="${t.noTag}">tag</td>
-				<td th:text="${t.time}">time</td>
-				<td th:text="${t.noAerial}">antena</td>
-				<td th:text="${t.runDate}">run date</td>
+				<tr th:each=" t : ${tags}">
+					<td th:text="${t.noTag}">tag</td>
+					<td th:text="${t.time}">time</td>
+					<td th:text="${t.noAerial}">antena</td>
+					<td th:text="${t.runDate}">run date</td>
 
-			</tr>
+				</tr>
 			</tbody>
-			
+
 		</table>
 	</div>
 
@@ -64,6 +72,15 @@ function updateTable(){
 		})
 }
 setInterval(updateTable, 1000);
+
+
+
+var race = [[${race}]];
+if(race== null){
+window.location.href="/race/new"
+	
+}
+
 
 </script>
 </body>

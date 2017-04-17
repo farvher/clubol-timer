@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<div th:replace="header :: cabezote"></div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h1>Nueva Carrera </h1>
+			<div th:fragment="newRace">
+
+				<form th:action="@{/race/save}" th:object="${newRace}"
+					method="POST">
+					<div class="form-group">
+						Nombre Carrera : <input type="text" class="form-control"
+							th:required="required" th:field="*{raceName}" />
+					</div>
+					<div class="form-group">
+						Descripcion : <input type="text" class="form-control"
+							th:required="required" th:field="*{description}" />
+					</div>
+					<div class="form-group">
+						Fecha Carrera : <input type="date" class="form-control"
+							th:required="required" th:field="*{dateRace}" />
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-default"
+							value="Guardar carrera" />
+					</div>
+
+
+				</form>
+
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 package org.clubol.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,8 @@ public class Category {
 	
 	private String description;
 	
+	
+	@Column(columnDefinition = "tinyint(1) default 1")
 	private Boolean active ;
 	
 	public Long getId() {

@@ -2,6 +2,7 @@ package org.clubol.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +23,10 @@ public class Race {
 	
 	private String description;
 	
-	@OneToMany(targetEntity = Chronometer.class)
+	private String dateRace;
+	
+	
+	@OneToMany(targetEntity = Chronometer.class,cascade=CascadeType.ALL )
 	private List<Chronometer> chronometers;
 
 	public Long getId() {
@@ -57,7 +61,14 @@ public class Race {
 		this.chronometers = chronometers;
 	}
 	
-	
+	public String getDateRace() {
+		return dateRace;
+	}
+
+	public void setDateRace(String dateRace) {
+		this.dateRace = dateRace;
+	}
+
 	
 
 }

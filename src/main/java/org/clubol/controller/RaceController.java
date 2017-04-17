@@ -4,14 +4,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.clubol.entity.Race;
 import org.clubol.entity.Tags;
+import org.clubol.services.RaceService;
 import org.clubol.services.RunnerService;
 import org.clubol.services.TagsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
@@ -23,6 +27,9 @@ public class RaceController {
 	private RunnerService runnerService;
 
 	@Autowired
+	private RaceService raceService;
+
+	@Autowired
 	private TagsService tagService;
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -31,29 +38,51 @@ public class RaceController {
 
 	private static final String raceView = "race";
 
-	@RequestMapping(value = "/race")
-	public String getRaceView(Model model) {
+	@RequestMapping(value = "/race/new")
+	public String newRace(Model model) {
+		model.addAttribute("newRace", new Race());
+		return "newRace";
+	}
+
+	@RequestMapping(value = "/race/save", method = RequestMethod.POST)
+	public String saveRace(@ModelAttribute Race race, Model model) {
+		if (raceService.findByRaceName(race.getRaceName()).size() == 0) {
+			raceService.saveRace(race);
+			model.addAttribute("message", "Carrera " + race.getRaceName() + " creada.");
+		}else{
+			model.addAttribute("error", "Carrera " + race.getRaceName() + " ya existe.");
+			return "redirect:/race/new";
+		}
+		return"redirect:/race/"+race.getRaceName();
+	}
+
+	@RequestMapping(value = "/race/{raceName}")
+	public String getRaceView(Model model, @PathVariable String raceName) {
 		model.addAttribute("tags", tagService.findByNoRunDate(sdf.format(new Date())));
 		model.addAttribute("dateRace", sdf.format(new Date()));
-
+		List<Race> races = raceService.findByRaceName(raceName);
+		if (races.size() == 0) {
+			return "redirect:/race/new";
+		}
+		model.addAttribute("race", raceService.findByRaceName(raceName).get(0));
 		return raceView;
 	}
 
-	@RequestMapping(value = "/race/date/{dateText}")
-	public String getRaceViewByDate(Model model, @PathVariable String dateText) {
+	// @RequestMapping(value = "/race/date/{dateText}")
+	// public String getRaceViewByDate(Model model, @PathVariable String
+	// dateText) {
+	//
+	// Date dateRace = getParseDate(dateText);
+	// model.addAttribute("tags", tagService.findByNoRunDate(dateText));
+	// model.addAttribute("dateRace", sdf.format(dateRace));
+	//
+	// return raceView;
+	// }
 
-		Date dateRace = getParseDate(dateText);
-		model.addAttribute("tags", tagService.findByNoRunDate(dateText));
-		model.addAttribute("dateRace", sdf.format(dateRace));
-
-		return raceView;
-	}
-
-	@RequestMapping(value = "/race/tag/{tag}")
-	public String getRaceViewByTag(Model model, @PathVariable Long tag) {
+	@RequestMapping(value = "/race/{raceName}/tag/{tag}")
+	public String getRaceViewByTag(Model model, @PathVariable String raceName, @PathVariable Long tag) {
 		model.addAttribute("tags", tagService.findByNoTag(tag));
-		model.addAttribute("dateRace", sdf.format(new Date()));
-
+		model.addAttribute("race", raceService.findByRaceName(raceName).get(0));
 		return raceView;
 	}
 
@@ -65,17 +94,6 @@ public class RaceController {
 	@ResponseBody
 	public String getRaceAjax(Model model) {
 		List<Tags> tags = tagService.findAll();
-		return gson.toJson(tags);
-	}
-
-	/**
-	 * 
-	 * Peticiones Ajax para fecha
-	 */
-	@RequestMapping(value = "/race/ajax/{dateText}")
-	@ResponseBody
-	public String raceAjaxByDate(Model model, @PathVariable String dateText) {
-		List<Tags> tags = tagService.findByNoRunDate(dateText);
 		return gson.toJson(tags);
 	}
 
