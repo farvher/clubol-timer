@@ -11,16 +11,18 @@
 	<div class="container">
 		<div th:if="${race}!=null" class="panel panel-default">
 			<div class="panel-heading">
-			<input type="hidden" th:value="${race.raceName}" id="raceName"/>
-				<label  th:text="${race.raceName}" class="">Carrera</label>
-				<label th:text="${race.description}">descripcion</label>
-				<label id="dateRace" th:utext="${race.dateRace}">dateRace</label>
+				<input type="hidden" th:value="${race.raceName}" id="raceName" /> <label
+					th:text="${race.raceName}" class="">Carrera</label> <label
+					th:text="${race.description}">descripcion</label> <label
+					id="dateRace" th:utext="${race.dateRace}">dateRace</label>
 			</div>
 			<div class="panel-body">
 				<div th:each="cr : ${race.chronometers}" class="row">
 					<div th:text="${cr.chronometerName}" class="col-md-4"></div>
-					<div th:text="${cr.timeStart}" class="col-md-4"></div>
-					<div th:text="${cr.timeEnd}" class="col-md-4"></div>
+					<button type="button" onclick="setTimeStart(this)"
+						th:text="${cr.timeStart}" class="col-md-2 btn btn-default"></button>
+					<button type="button" id="" th:text="${cr.timeEnd}"
+						class="col-md-2 btn btn-default"></button>
 				</div>
 			</div>
 		</div>
@@ -37,7 +39,7 @@
 			</tr>
 			<tbody id="tableRace">
 				<tr th:each=" t : ${tags}">
-				
+
 					<td th:text="${t.position}"></td>
 					<td th:text="${t.firstName}"></td>
 					<td th:text="${t.lastName}"></td>
@@ -52,6 +54,18 @@
 	</div>
 
 	<script>
+
+	function setTimeStart(btn){
+		
+		var today = new Date();
+		  var h = today.getHours();
+		  var m = today.getMinutes();
+		  var s = today.getSeconds();
+		  // add a zero in front of numbers<10
+		  m = checkTime(m);
+		  s = checkTime(s);
+		  $(btn).html(h+":"+m+":"+s);
+		}
 
 function updateTable(){
 	var raceName = $("#raceName").val()
@@ -84,6 +98,13 @@ function updateTable(){
 setInterval(updateTable, 1000);
 
 
+
+function checkTime(i) {
+	  if (i < 10) {
+	    i = "0" + i;
+	  }
+	  return i;
+	}
 
 
 
