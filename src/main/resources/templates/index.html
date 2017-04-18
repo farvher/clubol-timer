@@ -11,6 +11,43 @@
 
 		<h1>Clubol information System</h1>
 
+		<div>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>pendiente</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Habilitar/deshabilitar corredores</td>
+					</tr>
+					<tr>
+						<td>No quemar las categorias ni distancias</td>
+					</tr>
+					<tr>
+						<td>Arrancar y detener cronometros guardando el timestart y
+							el timeend() ademas de reiniciar y configurable los tiempos</td>
+					</tr>
+					<tr>
+						<td>organizar tags por categorias y distancias y generos
+							(teniendo en cuenta el tiempo)</td>
+					</tr>
+					<tr>
+						<td>Buscador por tag, nombre, categoria, distancia</td>
+					</tr>
+					<tr>
+						<td>Mostrar tag y tiempo aunque no haya corredor ligado al
+							tag</td>
+					</tr>
+					<tr>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
 		<div class="">
 			<div class="panel panel-default" th:each=" r : ${races}">
 				<div class="panel-heading">
@@ -47,6 +84,7 @@
 				</div>
 			</div>
 		</div>
+
 
 		<a th:href="@{/race/new}" href="#">Nueva Carrera</a>
 	</div>

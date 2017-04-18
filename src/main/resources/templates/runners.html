@@ -18,7 +18,7 @@
 						class="form-control"
 						placeholder="Buscar por Nombre, Apellido o Documento "
 						maxlength="40" th:required="required" /> <input type="button"
-						class="btn btn-default" value="Buscar" onclick="searchRunner()" />
+						class="btn btn-default" value="Buscar" onclick="search()" />
 				</form>
 			</div>
 		</div>
@@ -48,7 +48,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="r : ${runners}">
+				<tr th:each="r : ${runners}" th:class="${r.active}? 'success':'warning'">
 					<td th:text="${r.position}">Chip id</td>
 					<td th:text="${r.document}">Documento</td>
 					<td th:text="${r.firstName}">Nombres</td>
@@ -62,7 +62,7 @@
 					<td th:text="${r.category}">Categoria</td>
 					<td th:text="${r.gender}">Genero</td>
 
-					<td th:text="${r.active}">Activo</td>
+					<td><button th:value="${r.active}"  ></button></td>
 					<td></td>
 				</tr>
 			</tbody>
@@ -71,7 +71,7 @@
 
 	</div>
 	<script>
-		function searchRunner() {
+		function search() {
 			var key = $("#searchRunner").val();
 			if (key != "") {
 				window.location.href = "/runners/" + key;

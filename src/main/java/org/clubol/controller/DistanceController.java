@@ -16,7 +16,7 @@ public class DistanceController {
 	DistanceService distanceService;
 	
 	private static final String[] DISTANCES = { "10K (Categoria unica)", "21K (Categoria unica)",
-			"5K (Categoria unica)" , "Vuelta a la isla 32,5K", "Otra", "CategoryFilter" };
+			"5K (Categoria unica)" , "Vuelta a la isla 32,5K" };
 
 	@RequestMapping(value = "/distance/autosave")
 	public String addCategories() {

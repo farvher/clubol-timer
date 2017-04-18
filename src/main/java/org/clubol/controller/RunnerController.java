@@ -3,6 +3,7 @@ package org.clubol.controller;
 import org.clubol.entity.Runner;
 import org.clubol.services.CategoryService;
 import org.clubol.services.DistanceService;
+import org.clubol.services.RaceService;
 import org.clubol.services.RunnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class RunnerController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	@Autowired
+	private RaceService raceService;
 	
 	@Autowired
 	private DistanceService distanceService;
@@ -43,7 +46,7 @@ public class RunnerController {
 		model.addAttribute("message", "Corredor "+newRunner.getFirstName() + " guardado.");
 		model.addAttribute("runners",runnerService.findAll());
 		model.addAttribute("newRunner", new Runner());
-		return VIEW_RUNNER;
+		return "redirect:/" +VIEW_RUNNER;
 	}
 	
 	
@@ -75,5 +78,10 @@ public class RunnerController {
 		return "redirect:/runners";
 	}
 	
+	
+	private void addRaceModel(Model model){
+		
+		
+	}
 	
 }

@@ -1,11 +1,14 @@
 package org.clubol.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.clubol.dto.RaceDto;
 import org.clubol.entity.Race;
 import org.clubol.entity.Tags;
+import org.clubol.services.DistanceService;
 import org.clubol.services.RaceService;
 import org.clubol.services.RunnerService;
 import org.clubol.services.TagsService;
@@ -31,6 +34,9 @@ public class RaceController {
 
 	@Autowired
 	private TagsService tagService;
+	
+	@Autowired
+	private DistanceService distancesService;
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -38,9 +44,16 @@ public class RaceController {
 
 	private static final String raceView = "race";
 
+	
+	/**
+	 * Metodo para retornar el formulario de nueva carrera
+	 * */
 	@RequestMapping(value = "/race/new")
 	public String newRace(Model model) {
 		model.addAttribute("newRace", new Race());
+		if(distancesService.getDistances().isEmpty()){
+			
+		}
 		return "newRace";
 	}
 
@@ -58,55 +71,40 @@ public class RaceController {
 
 	@RequestMapping(value = "/race/{raceName}")
 	public String getRaceView(Model model, @PathVariable String raceName) {
-		model.addAttribute("tags", tagService.findByNoRunDate(sdf.format(new Date())));
-		model.addAttribute("dateRace", sdf.format(new Date()));
 		List<Race> races = raceService.findByRaceName(raceName);
-		if (races.size() == 0) {
+		if (races.isEmpty()) {
 			return "redirect:/race/new";
 		}
-		model.addAttribute("race", raceService.findByRaceName(raceName).get(0));
+		
+		Race race = raceService.findByRaceName(raceName).get(0);
+		model.addAttribute("race",race );
+		model.addAttribute("tags", tagService.findByRace(race.getRaceName()));
 		return raceView;
 	}
 
-	// @RequestMapping(value = "/race/date/{dateText}")
-	// public String getRaceViewByDate(Model model, @PathVariable String
-	// dateText) {
-	//
-	// Date dateRace = getParseDate(dateText);
-	// model.addAttribute("tags", tagService.findByNoRunDate(dateText));
-	// model.addAttribute("dateRace", sdf.format(dateRace));
-	//
-	// return raceView;
-	// }
 
-	@RequestMapping(value = "/race/{raceName}/tag/{tag}")
-	public String getRaceViewByTag(Model model, @PathVariable String raceName, @PathVariable Long tag) {
-		model.addAttribute("tags", tagService.findByNoTag(tag));
-		model.addAttribute("race", raceService.findByRaceName(raceName).get(0));
-		return raceView;
-	}
+//	@RequestMapping(value = "/race/{raceName}/tag/{tag}")
+//	public String getRaceViewByTag(Model model, @PathVariable String raceName, @PathVariable Long tag) {
+//		model.addAttribute("tags", tagService.findByNoTag(tag));
+//		model.addAttribute("race", raceService.findByRaceName(raceName).get(0));
+//		return raceView;
+//	}
 
 	/**
 	 * 
 	 * Peticiones Ajax todas
 	 */
-	@RequestMapping(value = "/race/ajax")
+	@RequestMapping(value = "/race/{raceName}/ajax")
 	@ResponseBody
-	public String getRaceAjax(Model model) {
-		List<Tags> tags = tagService.findAll();
-		return gson.toJson(tags);
+	public String getRaceAjax(Model model,@PathVariable String raceName) {
+		List<Race> races = raceService.findByRaceName(raceName);
+		if (races.isEmpty()) {
+			return gson.toJson(new ArrayList<RaceDto>());
+		}
+		Race race = races.get(0);
+		return gson.toJson(tagService.findByRace(race.getRaceName()));
 	}
 
-	/**
-	 * 
-	 * Peticiones Ajax para tag
-	 */
-	@RequestMapping(value = "/race/ajax/{tag}")
-	@ResponseBody
-	public String raceAjaxByTag(Model model, @PathVariable Long tag) {
-		List<Tags> tags = tagService.findByNoTag(tag);
-		return gson.toJson(tags);
-	}
 
 	@RequestMapping(value = "/save/tag")
 	@ResponseBody

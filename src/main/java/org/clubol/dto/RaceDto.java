@@ -10,29 +10,20 @@ public class RaceDto implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
-	private String document;
-	
+
 	private String firstName;
-	
+
 	private String lastName;
 	
+	private String gender;
+
 	private String time;
-	
-	private String gunTime;
-	
+
 	private String category;
-	
+
 	private String position;
-
-	public String getDocument() {
-		return document;
-	}
-
-	public void setDocument(String document) {
-		this.document = document;
-	}
+	
+	private String distance;
 
 	public String getFirstName() {
 		return firstName;
@@ -50,20 +41,20 @@ public class RaceDto implements Serializable {
 		this.lastName = lastName;
 	}
 
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	public String getTime() {
 		return time;
 	}
 
 	public void setTime(String time) {
 		this.time = time;
-	}
-
-	public String getGunTime() {
-		return gunTime;
-	}
-
-	public void setGunTime(String gunTime) {
-		this.gunTime = gunTime;
 	}
 
 	public String getCategory() {
@@ -81,11 +72,19 @@ public class RaceDto implements Serializable {
 	public void setPosition(String position) {
 		this.position = position;
 	}
-	
+
+	public String getDistance() {
+		return distance;
+	}
+
+	public void setDistance(String distance) {
+		this.distance = distance;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	
 	
-	
-	
-
 }

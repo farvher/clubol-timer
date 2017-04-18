@@ -14,7 +14,7 @@ public class CategoryController {
 	private CategoryService categoryService;
 
 	private static final String[] CATEGORIES = { "MASTER", "MASTER A", "MASTER B", "MASTER C", "MAYORES", "PLUS",
-			"UNICA" ,"ABIERTA","CATEGORYFILTER","OTRA" };
+			"UNICA" ,"ABIERTA" };
 
 	@RequestMapping(value = "/category/autosave")
 	public String addCategories() {

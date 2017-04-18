@@ -15,6 +15,6 @@ public interface RunnerRepository extends JpaRepository<Runner, Long> {
 
 	List<Runner> findByDocumentOrFirstNameOrLastName(String document,String firtsName, String lastName);
 
-	List<Runner> findByPosition(Long position);
+	Runner findByPosition(Long position);
 
 }

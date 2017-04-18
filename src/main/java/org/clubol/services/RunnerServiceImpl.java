@@ -42,7 +42,7 @@ public class RunnerServiceImpl  implements RunnerService{
 	}
 
 	@Override
-	public List<Runner> findByPosition(Long position) {
+	public Runner findByPosition(Long position) {
 		return runnerRepository.findByPosition(position);
 	}
 

@@ -8,36 +8,43 @@
 
 	<div th:replace="header :: cabezote"></div>
 
-	<div>
-		<div th:if="${race}!=null" class="well">
-			<h2 th:text="${race.raceName}">Carrera</h2>
-			<label th:text="${race.description}">descripcion</label>
-			<div id="dateRace" th:utext="${race.dateRace}">dateRace</div>
-			<div class="btn-group btn-group-lg"> 
-				<p th:each="cr : ${race.chronometers}" >
-					<label th:text="${cr.chronometerName}"></label>
-					<label th:text="${cr.timeStart}"></label>
-					<label th:text="${cr.timeEnd}"></label>
-				</p>
+	<div class="container">
+		<div th:if="${race}!=null" class="panel panel-default">
+			<div class="panel-heading">
+			<input type="hidden" th:value="${race.raceName}" id="raceName"/>
+				<label  th:text="${race.raceName}" class="">Carrera</label>
+				<label th:text="${race.description}">descripcion</label>
+				<label id="dateRace" th:utext="${race.dateRace}">dateRace</label>
 			</div>
-
-
+			<div class="panel-body">
+				<div th:each="cr : ${race.chronometers}" class="row">
+					<div th:text="${cr.chronometerName}" class="col-md-4"></div>
+					<div th:text="${cr.timeStart}" class="col-md-4"></div>
+					<div th:text="${cr.timeEnd}" class="col-md-4"></div>
+				</div>
+			</div>
 		</div>
 		<table class="table table-bordered table-condensed table-striped">
 			<tr>
-				<th>No tag</th>
+				<th>Chip No</th>
+				<th>Nombre</th>
+				<th>Apellido</th>
 				<th>Time</th>
-				<th>Antena</th>
-				<th>run date</th>
+				<th>Genero</th>
+				<th>Distancia</th>
+				<th>Categoria</th>
 
 			</tr>
 			<tbody id="tableRace">
 				<tr th:each=" t : ${tags}">
-					<td th:text="${t.noTag}">tag</td>
-					<td th:text="${t.time}">time</td>
-					<td th:text="${t.noAerial}">antena</td>
-					<td th:text="${t.runDate}">run date</td>
-
+				
+					<td th:text="${t.position}"></td>
+					<td th:text="${t.firstName}"></td>
+					<td th:text="${t.lastName}"></td>
+					<td th:text="${t.time}"></td>
+					<td th:text="${t.gender}"></td>
+					<td th:text="${t.distance}"></td>
+					<td th:text="${t.category}"></td>
 				</tr>
 			</tbody>
 
@@ -47,8 +54,8 @@
 	<script>
 
 function updateTable(){
-
-	var url ="/race/ajax"
+	var raceName = $("#raceName").val()
+	var url ="/race/"+raceName+"/ajax"
 	$.ajax({
 		url : url,
 		dataType : "json",
@@ -56,10 +63,13 @@ function updateTable(){
 			$("#tableRace").html("");
 			$.each(data,function(i,o){
 				var register = "<tr>";
-				register+="<td>"+o.noTag+"</td>";
+				register+="<td>"+o.position+"</td>";
+				register+="<td>"+o.firstName+"</td>";
+				register+="<td>"+o.lastName+"</td>";
 				register+="<td>"+o.time+"</td>";
-				register+="<td>"+o.noAerial+"</td>";
-				register+="<td>"+o.runDate+"</td>";
+				register+="<td>"+o.gender+"</td>";
+				register+="<td>"+o.distance+"</td>";
+				register+="<td>"+o.category+"</td>";
 				register+="</tr>";
 				$("#tableRace").append(register);
 				})
