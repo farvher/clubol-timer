@@ -17,9 +17,7 @@ public class CategoryController {
 			"UNICA" ,"ABIERTA","CATEGORYFILTER","OTRA" };
 
 	@RequestMapping(value = "/category/autosave")
-	@ResponseBody
 	public String addCategories() {
-
 		for(String c : CATEGORIES){
 			Category category = new Category();
 			category.setActive(true);
@@ -27,9 +25,7 @@ public class CategoryController {
 			category.setDescription("description : "+c.toLowerCase());
 			categoryService.addCategory(category);
 		}
-		
-		
-		return "Categorias guardadas";
+		return "redirect:/";
 	}
 
 }

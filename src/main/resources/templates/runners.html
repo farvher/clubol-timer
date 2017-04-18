@@ -9,17 +9,21 @@
 	<div th:replace="header :: cabezote"></div>
 
 
-	<div th:fragment="runners" class="panel panel-default">
+	<div class="container">
 
-		<h3>Corredores</h3>
-		<div class="form-group">
-			<input type="text"
-				id="searchRunner" name="searchRunner" class="form-control"
-				placeholder="Buscar por Nombre, Apellido o Documento " maxlength="40"
-				th:required="required" /> <input type="button"
-				class="btn btn-default" value="Buscar" onclick="searchRunner()" />
+		<div class="row">
+			<div class="col-md-8">
+				<form class="form-inline">
+					<input type="text" id="searchRunner" name="searchRunner"
+						class="form-control"
+						placeholder="Buscar por Nombre, Apellido o Documento "
+						maxlength="40" th:required="required" /> <input type="button"
+						class="btn btn-default" value="Buscar" onclick="searchRunner()" />
+				</form>
+			</div>
 		</div>
 
+<br/>
 
 		<table id="tableRunners" class="table table-bordered table-responsive">
 
@@ -67,13 +71,13 @@
 
 	</div>
 	<script>
- function searchRunner(){
-	var key = $("#searchRunner").val();
-	if(key!=""){
-	window.location.href="/runners/"+key;
+		function searchRunner() {
+			var key = $("#searchRunner").val();
+			if (key != "") {
+				window.location.href = "/runners/" + key;
+			}
+
 		}
-	
-	 }
 	</script>
 
 

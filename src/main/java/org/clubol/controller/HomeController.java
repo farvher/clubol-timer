@@ -1,6 +1,8 @@
 package org.clubol.controller;
 
 import org.clubol.entity.Runner;
+import org.clubol.services.CategoryService;
+import org.clubol.services.DistanceService;
 import org.clubol.services.RaceService;
 import org.clubol.services.RunnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class HomeController {
@@ -19,10 +22,19 @@ public class HomeController {
 	@Autowired
 	private RaceService raceService;
 	
+	@Autowired
+	private DistanceService distanceService;
+	
+	
+	@Autowired
+	private CategoryService categoryService;
+	
 	@RequestMapping("/")
 	public String index(Model model){
 		
 		model.addAttribute("races",raceService.findAll());
+		model.addAttribute("categories", categoryService.getCategories());
+		model.addAttribute("distances",distanceService.getDistances());
 		return "index";
 	}
 	

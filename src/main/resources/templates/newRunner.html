@@ -8,10 +8,9 @@
 
 	<div th:replace="header :: cabezote"></div>
 
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<h1>Nuevo Corredor</h1>
-			<div th:fragment="newRunner">
+	<div class="container">
+		<div class="row">
+			<div class="">
 
 				<form th:action="@{/runner/save}" th:object="${newRunner}"
 					method="POST">

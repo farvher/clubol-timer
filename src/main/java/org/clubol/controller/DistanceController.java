@@ -19,18 +19,14 @@ public class DistanceController {
 			"5K (Categoria unica)" , "Vuelta a la isla 32,5K", "Otra", "CategoryFilter" };
 
 	@RequestMapping(value = "/distance/autosave")
-	@ResponseBody
 	public String addCategories() {
-
 		for(String d : DISTANCES){
 			Distance distance = new Distance();
 			distance.setDistance(d);
 			distance.setDescription("description : "+d.toLowerCase());
 			distanceService.addDistance(distance);
 		}
-		
-		
-		return "Distancias guardadas";
+		return "redirect:/";
 	}
 	
 	

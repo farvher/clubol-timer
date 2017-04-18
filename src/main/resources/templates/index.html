@@ -1,26 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
 <head th:replace="head :: header">
 <title>Insert title here</title>
-</head><body>
+</head>
+<body>
 	<div th:replace="header :: cabezote"></div>
+	<div class="container">
 
-	<h1>Clubol information System</h1>
 
-	<div class="">
-		<div class="panel panel-default" th:each=" r : ${races}">
-			<div class="panel-heading">
+		<h1>Clubol information System</h1>
+
+		<div class="">
+			<div class="panel panel-default" th:each=" r : ${races}">
+				<div class="panel-heading">
 					<a th:text="${r.raceName}" th:href="|/race/${r.raceName}|"></a>
-			</div>
+				</div>
+				<div class="panel-body">
 
-			<label th:text="${r.description}"></label>
+					<button type="button" class="list-group-item"
+						th:text="${r.description}"></button>
+				</div>
+
+			</div>
 
 		</div>
 
-	</div>
+		<div>
+			<div id="categories" class="panel panel-default">
+				<div class="panel-heading">Categorias</div>
+				<div class="panel-body">
+					<div class="list-group">
+						<button th:each="c : ${categories}" type="button"
+							class="list-group-item" th:utext="${c.name}"></button>
+					</div>
+				</div>
+			</div>
 
-	<a th:href="@{/race/new}" href="#">Nueva Carrera</a>
+			<div id="distancias" class="panel panel-default">
+				<div class="panel-heading">Distancias</div>
+				<div class="panel-body">
+					<div class="list-group">
+						<button th:each="d : ${distances}" type="button"
+							class="list-group-item" th:utext="${d.distance}"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<a th:href="@{/race/new}" href="#">Nueva Carrera</a>
+	</div>
 </body>
 </html>
