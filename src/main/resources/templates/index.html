@@ -20,14 +20,7 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>Habilitar/deshabilitar corredores</td>
-					</tr>
-					<tr>
-						<td>No quemar las categorias ni distancias</td>
-					</tr>
-					<tr>
-						<td>Arrancar y detener cronometros guardando el timestart y
-							el timeend() ademas de reiniciar y configurable los tiempos</td>
+						<td> configurable los tiempos</td>
 					</tr>
 					<tr>
 						<td>organizar tags por categorias y distancias y generos
@@ -35,10 +28,6 @@
 					</tr>
 					<tr>
 						<td>Buscador por tag, nombre, categoria, distancia</td>
-					</tr>
-					<tr>
-						<td>Mostrar tag y tiempo aunque no haya corredor ligado al
-							tag</td>
 					</tr>
 					<tr>
 						<td></td>
@@ -49,14 +38,13 @@
 
 
 		<div class="">
-			<div class="panel panel-default" th:each=" r : ${races}">
-				<div class="panel-heading">
-					<a th:text="${r.raceName}" th:href="|/race/${r.raceName}|"></a>
-				</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Carreras</div>
 				<div class="panel-body">
+					<a th:each=" r : ${races}" type="button"
+						th:href="|/race/${r.raceName}|" class="list-group-item"
+						th:utext="${r.raceName}"></a>
 
-					<button type="button" class="list-group-item"
-						th:text="${r.description}"></button>
 				</div>
 
 			</div>
@@ -79,7 +67,7 @@
 				<div class="panel-body">
 					<div class="list-group">
 						<button th:each="d : ${distances}" type="button"
-							class="list-group-item" th:utext="${d.distance}"></button>
+							class="list-group-item" th:utext="${d.chronometerName}"></button>
 					</div>
 				</div>
 			</div>

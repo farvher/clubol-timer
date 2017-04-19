@@ -3,10 +3,8 @@ package org.clubol.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.clubol.dao.DistanceDao;
 import org.clubol.dao.RunnerRepository;
 import org.clubol.entity.Chronometer;
-import org.clubol.entity.Distance;
 import org.clubol.entity.Runner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +16,6 @@ public class RunnerServiceImpl  implements RunnerService{
 	@Autowired
 	RunnerRepository runnerRepository;
 	
-	@Autowired 
-	DistanceDao distanceDao;
 	
 	@Override
 	public List<Runner> findByLastName(String lastName) {
@@ -48,7 +44,9 @@ public class RunnerServiceImpl  implements RunnerService{
 
 	@Override
 	public void disableRunner(Long id) {
-		runnerRepository.getOne(id).setActive(false);
+		Runner r  = runnerRepository.getOne(id);;
+		r.setActive(!r.isActive());
+		runnerRepository.save(r);
 		
 	}
 

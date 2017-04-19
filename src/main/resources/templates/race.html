@@ -9,31 +9,65 @@
 	<div th:replace="header :: cabezote"></div>
 
 	<div class="container">
-		<div th:if="${race}!=null" class="panel panel-default">
-			<div class="panel-heading">
-				<input type="hidden" th:value="${race.raceName}" id="raceName" /> <label
-					th:text="${race.raceName}" class="">Carrera</label> <label
-					th:text="${race.description}">descripcion</label> <label
-					id="dateRace" th:utext="${race.dateRace}">dateRace</label>
-			</div>
-			<div class="panel-body">
-				<div th:each="cr : ${race.chronometers}" class="row">
-					<div th:text="${cr.chronometerName}" class="col-md-4"></div>
-					<button type="button" onclick="setTimeStart(this)"
-						th:text="${cr.timeStart}" class="col-md-2 btn btn-default"></button>
-					<button type="button" id="" th:text="${cr.timeEnd}"
-						class="col-md-2 btn btn-default"></button>
+		<div class="row">
+			<!-- 			PANEL DE CRONOMETROS -->
+			<div th:if="${race}!=null" class="panel panel-default ">
+				<div class="panel-heading">
+					<input type="hidden" th:value="${race.raceName}" id="raceName" />
+					<label th:text="${race.raceName}" class="">Carrera</label> <label
+						th:text="${race.description}">descripcion</label> <label
+						id="dateRace" th:utext="${race.dateRace}">dateRace</label>
+				</div>
+				<div class="panel-body ">
+					<div class="row">
+						<div class="col-md-2">
+							<label>Cronometros</label>
+						</div>
+						<div class="col-md-2">
+							<label>Inicio</label>
+						</div>
+						<div class="col-md-2">
+							<label>Transcurrido</label>
+						</div>
+						<div class="col-md-2">
+						</div>
+					</div>
+					<div th:each="cr : ${race.chronometers}" class="row">
+						<div class="col-md-2" th:text="${cr.chronometerName}"></div>
+						<div class="col-md-2">
+							<button type="button" onclick="setTimeStart(this)"
+								th:text="${cr.timeStart}" th:value="${cr.id}"
+								class=" btn btn-default"></button>
+						</div>
+						<div class="col-md-2">0:00:00</div>
+						<div class="col-md-2">
+<!-- 							<form class="form-inline"> -->
+<!-- 								<input type="number" placeholder="HH" class="form-control" /> <input -->
+<!-- 									type="number" placeholder="MM" class="form-control" /> <input -->
+<!-- 									type="number" placeholder="SS" class="form-control" /> -->
+<!-- 							</form> -->
+
+
+						</div>
+
+
+					</div>
+
+
+
 				</div>
 			</div>
+
 		</div>
 		<table class="table table-bordered table-condensed table-striped">
 			<tr>
 				<th>Chip No</th>
 				<th>Nombre</th>
 				<th>Apellido</th>
+				<th>Chip Time</th>
 				<th>Time</th>
 				<th>Genero</th>
-				<th>Distancia</th>
+				<th>Distancia (Cronometro)</th>
 				<th>Categoria</th>
 
 			</tr>
@@ -44,6 +78,7 @@
 					<td th:text="${t.firstName}"></td>
 					<td th:text="${t.lastName}"></td>
 					<td th:text="${t.time}"></td>
+					<td th:text="${t.passTime}"></td>
 					<td th:text="${t.gender}"></td>
 					<td th:text="${t.distance}"></td>
 					<td th:text="${t.category}"></td>
@@ -64,7 +99,25 @@
 		  // add a zero in front of numbers<10
 		  m = checkTime(m);
 		  s = checkTime(s);
-		  $(btn).html(h+":"+m+":"+s);
+		  var timeStart = h+":"+m+":"+s;
+		  $(btn).html(timeStart);
+		  var idCrono = $(btn).val();
+		  saveCronometerTimeStart(idCrono,timeStart,"0");
+		}
+
+	function setTimeEnd(btn){
+		
+		var today = new Date();
+		  var h = today.getHours();
+		  var m = today.getMinutes();
+		  var s = today.getSeconds();
+		  // add a zero in front of numbers<10
+		  m = checkTime(m);
+		  s = checkTime(s);
+		  var timeEnd = h+":"+m+":"+s;
+		  $(btn).html(timeEnd);
+		  var idCrono = $(btn).val();
+		  saveCronometerTimeStart(idCrono,"0",timeEnd);
 		}
 
 function updateTable(){
@@ -81,6 +134,7 @@ function updateTable(){
 				register+="<td>"+o.firstName+"</td>";
 				register+="<td>"+o.lastName+"</td>";
 				register+="<td>"+o.time+"</td>";
+				register+="<td>"+o.passTime+"</td>";
 				register+="<td>"+o.gender+"</td>";
 				register+="<td>"+o.distance+"</td>";
 				register+="<td>"+o.category+"</td>";
@@ -105,6 +159,40 @@ function checkTime(i) {
 	  }
 	  return i;
 	}
+
+function saveCronometerTimeStart(id,timeStart,timeEnd){
+
+	var url = "/chronometer/";
+	url+=id+"/";
+	url+=timeStart+"/";
+	url+=timeEnd+"";
+	var params="";
+	var func = function(data){
+		console.log(data);
+		};
+	sendAjax(url,params,func,"GET");
+	
+}
+
+function sendAjax(url,params,func,method){
+
+	$.ajax({
+		url : url,
+		data:params,
+		method:method,
+		data:JSON.stringify(params),
+		contentType:'application/json',
+		success:func,
+		error : function(er,ex,error){
+			alert("error ajax: "+er);
+			}
+		})
+}
+
+function updateTranscurrido(){
+
+	
+}
 
 
 

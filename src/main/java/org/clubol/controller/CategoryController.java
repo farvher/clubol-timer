@@ -18,12 +18,14 @@ public class CategoryController {
 
 	@RequestMapping(value = "/category/autosave")
 	public String addCategories() {
+		if(categoryService.getCategories().isEmpty()){
 		for(String c : CATEGORIES){
 			Category category = new Category();
 			category.setActive(true);
 			category.setName(c);
 			category.setDescription("description : "+c.toLowerCase());
 			categoryService.addCategory(category);
+		}
 		}
 		return "redirect:/";
 	}

@@ -19,6 +19,7 @@
 						placeholder="Buscar por Nombre, Apellido o Documento "
 						maxlength="40" th:required="required" /> <input type="button"
 						class="btn btn-default" value="Buscar" onclick="search()" />
+						<a class="btn btn-default" href="/runners">Todos</a>
 				</form>
 			</div>
 		</div>
@@ -43,8 +44,6 @@
 					<th>Genero</th>
 
 					<th>Activo</th>
-					<th></th>
-
 				</tr>
 			</thead>
 			<tbody>
@@ -62,8 +61,7 @@
 					<td th:text="${r.category}">Categoria</td>
 					<td th:text="${r.gender}">Genero</td>
 
-					<td><button th:value="${r.active}"  ></button></td>
-					<td></td>
+					<td><a th:href="@{/runner/enableDisable/}+ ${r.id}" th:text="${r.active}? 'Activo':'Inactivo'"  class="btn btn-default" ></a></td>
 				</tr>
 			</tbody>
 

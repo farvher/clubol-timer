@@ -18,12 +18,16 @@ public class RaceDto implements Serializable {
 	private String gender;
 
 	private String time;
+	
+	private String passTime;
 
 	private String category;
 
 	private String position;
 	
 	private String distance;
+	
+	private boolean active;
 
 	public String getFirstName() {
 		return firstName;
@@ -85,6 +89,23 @@ public class RaceDto implements Serializable {
 		return serialVersionUID;
 	}
 
+	public String getPassTime() {
+		return passTime;
+	}
+
+	public void setPassTime(String passTime) {
+		this.passTime = passTime;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	
 	
 	
 }

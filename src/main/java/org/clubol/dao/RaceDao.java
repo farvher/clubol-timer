@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface RaceDao extends JpaRepository<Race, Long>  {
 
 	
-	List<Race> findByRaceName(String raceName);
+	Race findFirstByRaceName(String raceName);
 	
 }

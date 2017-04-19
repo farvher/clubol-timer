@@ -2,7 +2,7 @@ package org.clubol.controller;
 
 import org.clubol.entity.Runner;
 import org.clubol.services.CategoryService;
-import org.clubol.services.DistanceService;
+import org.clubol.services.ChronometerService;
 import org.clubol.services.RaceService;
 import org.clubol.services.RunnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class HomeController {
 	private RaceService raceService;
 	
 	@Autowired
-	private DistanceService distanceService;
+	private ChronometerService chronometerService;
 	
 	
 	@Autowired
@@ -34,7 +34,7 @@ public class HomeController {
 		
 		model.addAttribute("races",raceService.findAll());
 		model.addAttribute("categories", categoryService.getCategories());
-		model.addAttribute("distances",distanceService.getDistances());
+		model.addAttribute("distances",chronometerService.findAll());
 		return "index";
 	}
 	

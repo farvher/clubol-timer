@@ -8,7 +8,7 @@ import java.util.List;
 import org.clubol.dto.RaceDto;
 import org.clubol.entity.Race;
 import org.clubol.entity.Tags;
-import org.clubol.services.DistanceService;
+import org.clubol.services.ChronometerService;
 import org.clubol.services.RaceService;
 import org.clubol.services.RunnerService;
 import org.clubol.services.TagsService;
@@ -36,7 +36,7 @@ public class RaceController {
 	private TagsService tagService;
 	
 	@Autowired
-	private DistanceService distancesService;
+	private ChronometerService ChronometerService;
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -51,15 +51,12 @@ public class RaceController {
 	@RequestMapping(value = "/race/new")
 	public String newRace(Model model) {
 		model.addAttribute("newRace", new Race());
-		if(distancesService.getDistances().isEmpty()){
-			
-		}
 		return "newRace";
 	}
 
 	@RequestMapping(value = "/race/save", method = RequestMethod.POST)
 	public String saveRace(@ModelAttribute Race race, Model model) {
-		if (raceService.findByRaceName(race.getRaceName()).size() == 0) {
+		if (raceService.findByRaceName(race.getRaceName()) == null) {
 			raceService.saveRace(race);
 			model.addAttribute("message", "Carrera " + race.getRaceName() + " creada.");
 		}else{
@@ -71,12 +68,11 @@ public class RaceController {
 
 	@RequestMapping(value = "/race/{raceName}")
 	public String getRaceView(Model model, @PathVariable String raceName) {
-		List<Race> races = raceService.findByRaceName(raceName);
-		if (races.isEmpty()) {
+		Race race = raceService.findByRaceName(raceName);
+		if (race==null) {
 			return "redirect:/race/new";
 		}
-		
-		Race race = raceService.findByRaceName(raceName).get(0);
+	
 		model.addAttribute("race",race );
 		model.addAttribute("tags", tagService.findByRace(race.getRaceName()));
 		return raceView;
@@ -97,12 +93,12 @@ public class RaceController {
 	@RequestMapping(value = "/race/{raceName}/ajax")
 	@ResponseBody
 	public String getRaceAjax(Model model,@PathVariable String raceName) {
-		List<Race> races = raceService.findByRaceName(raceName);
-		if (races.isEmpty()) {
+		Race race = raceService.findByRaceName(raceName);
+		if (race==null) {
 			return gson.toJson(new ArrayList<RaceDto>());
 		}
-		Race race = races.get(0);
-		return gson.toJson(tagService.findByRace(race.getRaceName()));
+		List<RaceDto> raceDtoList = tagService.findByRace(race.getRaceName());
+		return gson.toJson(raceDtoList);
 	}
 
 
@@ -111,14 +107,14 @@ public class RaceController {
 	public String saveTag(Model model) {
 		Tags tag = new Tags();
 		tag.setNoAerial(1L);
-		tag.setRunDate(sdf.format(new Date()));
-		tag.setTime("05:30:22");
+		tag.setRunDate("2017-04-23");
+		tag.setTime("18:30:22");
 		tag.setNoTag(60L);
 		tagService.saveTag(tag);
 		Tags tag2 = new Tags();
 		tag2.setNoAerial(1L);
-		tag2.setRunDate(sdf.format(new Date()));
-		tag2.setTime("06:30:22");
+		tag2.setRunDate("2017-04-23");
+		tag2.setTime("17:30:22");
 		tag2.setNoTag(30L);
 		tagService.saveTag(tag2);
 		return "guardado";

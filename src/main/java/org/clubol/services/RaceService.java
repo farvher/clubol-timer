@@ -9,7 +9,7 @@ public interface RaceService {
 	
 	void saveRace(Race race);
 	
-	List<Race> findByRaceName(String raceName);
+	Race findByRaceName(String raceName);
 	
 	List<Race> findAll();
 }
