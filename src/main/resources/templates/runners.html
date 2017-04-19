@@ -47,13 +47,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="r : ${runners}" th:class="${r.active}? 'success':'warning'">
+				<tr th:id="|runner-${r.id}|" th:each="r : ${runners}" th:class="${r.active}? 'success':'warning'">
 					<td th:text="${r.position}">Chip id</td>
 					<td th:text="${r.document}">Documento</td>
 					<td th:text="${r.firstName}">Nombres</td>
 					<td th:text="${r.lastName}">Apellidos</td>
 					<td th:text="${r.age}">Edad</td>
-					<td th:text="${r.email}">Email</td>
+					<td >Email</td>
 					<td th:text="${r.cellPhone}">Telefono</td>
 
 					<!-- 		datos de categoria -->

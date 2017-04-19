@@ -75,7 +75,7 @@ public class RunnerController {
 	@RequestMapping(value="/runner/enableDisable/{id}")
 	public String disableRunner(Model model,@PathVariable Long id){
 		runnerService.disableRunner(id);
-		return "redirect:/runners";
+		return "redirect:/runners#runner-"+id;
 	}
 	
 	
