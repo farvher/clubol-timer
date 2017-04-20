@@ -23,34 +23,21 @@
 						<div class="col-md-2">
 							<label>Cronometros</label>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-1">
 							<label>Inicio</label>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-1">
 							<label>Transcurrido</label>
-						</div>
-						<div class="col-md-2">
 						</div>
 					</div>
 					<div th:each="cr : ${race.chronometers}" class="row">
 						<div class="col-md-2" th:text="${cr.chronometerName}"></div>
-						<div class="col-md-2">
+						<div class="col-md-1">
 							<button type="button" onclick="setTimeStart(this)"
 								th:text="${cr.timeStart}" th:value="${cr.id}"
-								class=" btn btn-default"></button>
+								class=" btn btn-xs btn-default timestart"></button>
 						</div>
-						<div class="col-md-2">0:00:00</div>
-						<div class="col-md-2">
-<!-- 							<form class="form-inline"> -->
-<!-- 								<input type="number" placeholder="HH" class="form-control" /> <input -->
-<!-- 									type="number" placeholder="MM" class="form-control" /> <input -->
-<!-- 									type="number" placeholder="SS" class="form-control" /> -->
-<!-- 							</form> -->
-
-
-						</div>
-
-
+						<div class="col-md-1 timepass"  >0:00:00</div>
 					</div>
 
 
@@ -149,9 +136,13 @@ function updateTable(){
              }
 		})
 }
-setInterval(updateTable, 1000);
 
 
+$(document).ready(function(){
+	updateTranscurrido();
+	setInterval(updateTranscurrido,1000);
+	setInterval(updateTable, 1000);	
+})
 
 function checkTime(i) {
 	  if (i < 10) {
@@ -190,9 +181,34 @@ function sendAjax(url,params,func,method){
 }
 
 function updateTranscurrido(){
-
+	var lapse = [];
+	$(".timestart").each(function(){
+		var time = ($(this).html());
+		var hour = time.split(":")[0];
+		var minute = time.split(":")[1];
+		var second = time.split(":")[2];
+		var current = new Date();
+		current.setHours(hour);
+		current.setMinutes(minute);
+		current.setSeconds(second)
+		
+		var currentLocal = new Date();
+		var secondPass = (currentLocal.getTime() - current.getTime())/1000;
+		lapse.push(convertSecondsToHHMMSS(secondPass))
+	})
+	
+	$(".timepass").each(function(i,o){
+		$(this).html(lapse[i]);
+		
+	})
 	
 }
+
+function convertSecondsToHHMMSS(seconds){
+	var date = new Date(null);
+	date.setSeconds(seconds); // specify value for SECONDS here
+	return date.toISOString().substr(11, 8);
+	}
 
 
 

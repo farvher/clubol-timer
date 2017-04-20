@@ -39,7 +39,7 @@ public class RunnerServiceImpl  implements RunnerService{
 
 	@Override
 	public Runner findByPosition(Long position) {
-		return runnerRepository.findByPosition(position);
+		return runnerRepository.findFirstByPosition(position);
 	}
 
 	@Override
@@ -47,6 +47,12 @@ public class RunnerServiceImpl  implements RunnerService{
 		Runner r  = runnerRepository.getOne(id);;
 		r.setActive(!r.isActive());
 		runnerRepository.save(r);
+		
+	}
+
+	@Override
+	public void delete(Long id) {
+		runnerRepository.delete(id);
 		
 	}
 

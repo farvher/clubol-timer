@@ -77,7 +77,7 @@ public class TagsServiceImpl implements TagsService {
 		List<RaceDto> raceDtoList = new ArrayList<>();
 		if (tags.size() > 0) {
 			for (Tags t : tags) {
-				Runner runner = runnerRepository.findByPosition(t.getNoTag());
+				Runner runner = runnerRepository.findFirstByPosition(t.getNoTag());
 				if (runner != null) {
 					RaceDto r = new RaceDto();
 					r.setCategory(runner.getCategory());

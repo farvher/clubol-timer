@@ -17,7 +17,9 @@ public interface RunnerService {
 	Runner findByPosition(Long position);
 	
 	
-	void disableRunner(Long id);	
+	void disableRunner(Long id);
+
+	void delete(Long id);	
 	
 	
 

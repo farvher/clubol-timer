@@ -34,7 +34,9 @@ public class RunnerController {
 	@RequestMapping(value = "/runner/new" )
 	public String newRunner(Model model){
 	
-		model.addAttribute("newRunner", new Runner());
+		Runner r = new Runner();
+		r.setActive(true);
+		model.addAttribute("newRunner",r);
 		model.addAttribute("categories",categoryService.getCategories());
 		model.addAttribute("distances", chronometerService.findAll());
 		return "newRunner";
@@ -78,10 +80,10 @@ public class RunnerController {
 		return "redirect:/runners#runner-"+id;
 	}
 	
-	
-	private void addRaceModel(Model model){
-		
-		
+	@RequestMapping(value="/runner/delete/{id}")
+	private String deleteRunner(Model model,@PathVariable Long id){
+		runnerService.delete(id);
+		return "redirect:/runners";
 	}
 	
 }
