@@ -14,8 +14,8 @@ public class ChronometerController {
 	@Autowired
 	private ChronometerService chronometerService;
 
-	private static final String[] DISTANCES = { "10K (Categoria unica)", "21K (Categoria unica)",
-			"5K (Categoria unica)", "Vuelta a la isla 32,5K" };
+	private static final String[] DISTANCES = { "10K (Categoría Única)", "21K (Categoria unica)",
+			"5K (Categoría Única)", "Vuelta a la Isla 32,5K" };
 
 	@RequestMapping("/chronometer/{id}/{timeStart}/{timeEnd}")
 	@ResponseBody

@@ -66,6 +66,9 @@ public class RaceController {
 		return"redirect:/race/"+race.getRaceName();
 	}
 
+	/**
+	 * Metodo para listar los tag que se han leido
+	 * */
 	@RequestMapping(value = "/race/{raceName}")
 	public String getRaceView(Model model, @PathVariable String raceName) {
 		Race race = raceService.findByRaceName(raceName);
@@ -75,7 +78,24 @@ public class RaceController {
 	
 		model.addAttribute("race",race );
 		model.addAttribute("tags", tagService.findByRace(race.getRaceName()));
+//		model.addAttribute("tagRunners", tagService.findRunnerAndTags());
 		return raceView;
+	}
+	
+	/**
+	 * 
+	 * Metodo para listar los corredores y medir sus tiempos
+	 * */
+	@RequestMapping(value = "/raceRunner/{raceName}")
+	public String getRaceRunnerView(Model model, @PathVariable String raceName) {
+		Race race = raceService.findByRaceName(raceName);
+		if (race==null) {
+			return "redirect:/race/new";
+		}
+		model.addAttribute("race",race );
+//		model.addAttribute("tags", tagService.findByRace(race.getRaceName()));
+		model.addAttribute("tagRunners", tagService.findRunnerAndTags());
+		return "raceTimes";
 	}
 
 
@@ -108,13 +128,13 @@ public class RaceController {
 		Tags tag = new Tags();
 		tag.setNoAerial(1L);
 		tag.setRunDate("2017-04-23");
-		tag.setTime("23:30:22");
+		tag.setTime("11:12:22");
 		tag.setNoTag(60L);
 		tagService.saveTag(tag);
 		Tags tag2 = new Tags();
 		tag2.setNoAerial(1L);
 		tag2.setRunDate("2017-04-23");
-		tag2.setTime("23:30:22");
+		tag2.setTime("10:30:22");
 		tag2.setNoTag(30L);
 		tagService.saveTag(tag2);
 		return "guardado";

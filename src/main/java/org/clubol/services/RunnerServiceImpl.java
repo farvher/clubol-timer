@@ -29,7 +29,7 @@ public class RunnerServiceImpl  implements RunnerService{
 
 	@Override
 	public List<Runner> findAll() {
-		return runnerRepository.findAll();
+		return runnerRepository.findAllByOrderByPosition();
 	}
 
 	@Override
@@ -41,6 +41,13 @@ public class RunnerServiceImpl  implements RunnerService{
 	public Runner findByPosition(Long position) {
 		return runnerRepository.findFirstByPosition(position);
 	}
+	
+	@Override
+	public List<Runner>findByPositionAll(Long id){
+		return runnerRepository.findByPosition(id);
+		
+	}
+	
 
 	@Override
 	public void disableRunner(Long id) {
@@ -54,6 +61,21 @@ public class RunnerServiceImpl  implements RunnerService{
 	public void delete(Long id) {
 		runnerRepository.delete(id);
 		
+	}
+
+	@Override
+	public Runner findById(Long id) {
+		return runnerRepository.getOne(id);
+	}
+
+	@Override
+	public Runner findFirstByDocument(String document) {
+		return  runnerRepository.findFirstByDocument(document);
+	}
+
+	@Override
+	public List<Object[]> findDuplicatePositions() {
+		return runnerRepository.findDuplicatePositions();
 	}
 
 }

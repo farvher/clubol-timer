@@ -1,8 +1,11 @@
 package org.clubol.services;
 
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class TagsServiceImpl implements TagsService {
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("H:mm:ss");
-	
+
 	private static final String UNKNOW = "desconocido";
 
 	@Autowired
@@ -90,7 +93,7 @@ public class TagsServiceImpl implements TagsService {
 					r.setActive(runner.isActive());
 					r.setPassTime(this.compareTime(r.getDistance(), r.getTime()));
 					raceDtoList.add(r);
-				}else {
+				} else {
 					RaceDto r = new RaceDto();
 					r.setCategory(UNKNOW);
 					r.setDistance(UNKNOW);
@@ -101,7 +104,7 @@ public class TagsServiceImpl implements TagsService {
 					r.setTime(t.getTime());
 					r.setPassTime(UNKNOW);
 					raceDtoList.add(r);
-					
+
 				}
 			}
 		}
@@ -119,7 +122,7 @@ public class TagsServiceImpl implements TagsService {
 				Date timeDate = sdf.parse(time);
 
 				if (crDate.before(timeDate)) {
-					Long seconds = (timeDate.getTime()-crDate.getTime())/1000 ;
+					Long seconds = (timeDate.getTime() - crDate.getTime()) / 1000;
 					return convertSecondsToHHMMSS(seconds).toString();
 				}
 			}
@@ -128,30 +131,64 @@ public class TagsServiceImpl implements TagsService {
 		}
 		return time;
 	}
-	
-	private String convertSecondsToHHMMSS(long seconds){
-		  Long hr = seconds/3600;
-		  Long rem = seconds%3600;
-		  Long mn = rem/60;
-		  Long sec = rem%60;
-		  String hrStr = (hr<10 ? "0" : "")+hr;
-		  String mnStr = (mn<10 ? "0" : "")+mn;
-		  String secStr = (sec<10 ? "0" : "")+sec; 
-		  return hrStr+":"+mnStr+":"+secStr;
-		
+
+	private String convertSecondsToHHMMSS(long seconds) {
+		Long hr = seconds / 3600;
+		Long rem = seconds % 3600;
+		Long mn = rem / 60;
+		Long sec = rem % 60;
+		String hrStr = (hr < 10 ? "0" : "") + hr;
+		String mnStr = (mn < 10 ? "0" : "") + mn;
+		String secStr = (sec < 10 ? "0" : "") + sec;
+		return hrStr + ":" + mnStr + ":" + secStr;
+
 	}
-	
-	private String twoTagsCompare(Long tag){
-		List<Tags> tags = tagRepository.findByNoTag(tag);
-		
-		if(tags.size()>1){
-//			Date maxTime =  sdf.parse(tags.get(0).getTime());
-//			Date minTime = sdf.parse(tags.get(0).getTime());
-			for(Tags t: tags){
+
+	@Override
+	public List<RaceDto> findRunnerAndTags() {
+		List<RaceDto> tagRunner = new ArrayList<>();
+		List<Runner> runners = runnerRepository.findAll();
+		for (Runner runner : runners) {
+			List<Tags> listTags = tagRepository.findByNoTag(runner.getPosition());
+			RaceDto r = new RaceDto();
+			r.setCategory(runner.getCategory());
+			r.setDistance(runner.getDistance());
+			r.setFirstName(runner.getFirstName());
+			r.setGender(runner.getGender());
+			r.setLastName(runner.getLastName());
+			r.setPosition(runner.getPosition().toString());
+			r.setActive(runner.isActive());
+			r.setTimeTags(processTimeTags(listTags));
+			if (!r.getTimeTags().isEmpty()) {
+				tagRunner.add(r);
 			}
-			
 		}
-		return tags.size()+"";
+		return tagRunner;
+	}
+
+	private List<String> processTimeTags(List<Tags> tags) {
+		List<String> tagsProcessed = new ArrayList<>();
+		List<Date> unOrderDates = new ArrayList<>();
+		for (Tags t : tags) {
+			Date d = parseDate(t.getTime());
+			unOrderDates.add(d);
+		}
+		Collections.sort(unOrderDates);
+
+		for (Date d : unOrderDates) {
+			String strTime = sdf.format(d);
+			tagsProcessed.add(strTime);
+		}
+
+		return tagsProcessed;
+	}
+
+	private static Date parseDate(String strDate) {
+		try {
+			return sdf.parse(strDate);
+		} catch (Exception e) {
+		}
+		return new Date();
 	}
 
 }

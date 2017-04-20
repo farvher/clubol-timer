@@ -20,6 +20,9 @@
 						maxlength="40" th:required="required" /> <input type="button"
 						class="btn btn-default" value="Buscar" onclick="search()" /> <a
 						class="btn btn-default" href="/runners">Todos</a>
+						 <a class="btn btn-default" href="/runner/new">Nuevo</a>
+						 
+						<a class="btn btn-default" href="/runner/duplicates">Duplicados</a>
 				</form>
 			</div>
 		</div>
@@ -34,9 +37,9 @@
 					<th>Chip id</th>
 					<th>Documento</th>
 					<th>Nombres</th>
-<!-- 					<th>Apellidos</th> -->
+					<!-- 					<th>Apellidos</th> -->
 					<th>Edad</th>
-<!-- 					<th>Email</th> -->
+					<!-- 					<th>Email</th> -->
 					<th>Telefono</th>
 
 					<!-- 		datos de categoria -->
@@ -45,6 +48,7 @@
 					<th>Genero</th>
 
 					<th>Activo</th>
+					<th>Editar</th>
 					<th>Borrar</th>
 				</tr>
 			</thead>
@@ -55,9 +59,9 @@
 					<td th:text="${r.position}">Chip id</td>
 					<td th:text="${r.document}">Documento</td>
 					<td th:text="${r.firstName}">Nombres</td>
-<!-- 					<td th:text="${r.lastName}">Apellidos</td> -->
+					<!-- 					<td th:text="${r.lastName}">Apellidos</td> -->
 					<td th:text="${r.age}">Edad</td>
-<!-- 					<td>Email</td> -->
+					<!-- 					<td>Email</td> -->
 					<td th:text="${r.cellPhone}">Telefono</td>
 
 					<!-- 		datos de categoria -->
@@ -66,8 +70,12 @@
 					<td th:text="${r.gender}">Genero</td>
 
 					<td><a th:href="@{/runner/enableDisable/}+ ${r.id}"
-						th:text="${r.active}? 'Activo':'Inactivo'" class="btn btn-default"></a></td>
-					<td><a th:href="@{/runner/delete/}+${r.id}"  onclick="return validDelete(this)" class="btn btn-danger">Borrar</a></td>
+						th:text="${r.active}? 'Activo':'Inactivo'"
+						class="btn btn-default btn-xs"></a></td>
+					<td><a th:href="@{/runner/update/}+${r.id}"
+						class="btn btn-warning btn-xs">Editar</a></td>
+					<td><a th:href="@{/runner/delete/}+${r.id}"
+						onclick="return validDelete(this)" class="btn btn-danger btn-xs">Borrar</a></td>
 				</tr>
 			</tbody>
 

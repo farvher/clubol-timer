@@ -19,4 +19,7 @@ public interface TagsService {
 	List<Tags> findByNoRunDate(String runDate);
 
 	List<RaceDto> findByRace(String raceName);
+	
+	List<RaceDto> findRunnerAndTags();
+	
 }

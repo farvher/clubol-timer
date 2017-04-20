@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChronometerRepository  extends JpaRepository<Chronometer,Long>{
 
-	Chronometer findFirstByChronometerName(String chronometerName);
+	Chronometer findFirstByChronometerNameIgnoreCase(String chronometerName);
 	
 	
 }

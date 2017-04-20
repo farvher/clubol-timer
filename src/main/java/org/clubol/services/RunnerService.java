@@ -16,11 +16,19 @@ public interface RunnerService {
 
 	Runner findByPosition(Long position);
 	
+	Runner findById(Long id);
+	
+	Runner findFirstByDocument(String document);
+	
 	
 	void disableRunner(Long id);
 
 	void delete(Long id);	
 	
+	
+	List<Object[]> findDuplicatePositions();
+
+	List<Runner> findByPositionAll(Long id);
 	
 
 }

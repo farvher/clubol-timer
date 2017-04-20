@@ -1,6 +1,7 @@
 package org.clubol.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.clubol.entity.Runner;
 
@@ -20,6 +21,8 @@ public class RaceDto implements Serializable {
 	private String time;
 	
 	private String passTime;
+	
+	private List<String> timeTags;
 
 	private String category;
 
@@ -103,6 +106,14 @@ public class RaceDto implements Serializable {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public List<String> getTimeTags() {
+		return timeTags;
+	}
+
+	public void setTimeTags(List<String> timeTags) {
+		this.timeTags = timeTags;
 	}
 
 	

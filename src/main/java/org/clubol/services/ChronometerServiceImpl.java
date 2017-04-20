@@ -38,7 +38,7 @@ public class ChronometerServiceImpl implements ChronometerService {
 
 	@Override
 	public Chronometer findFirstByChronometerName(String chronometerName) {
-		return chronometerRepository.findFirstByChronometerName(chronometerName);
+		return chronometerRepository.findFirstByChronometerNameIgnoreCase(chronometerName);
 	}
 
 }

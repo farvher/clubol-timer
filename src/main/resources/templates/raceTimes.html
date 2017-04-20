@@ -46,29 +46,27 @@
 			</div>
 
 		</div>
+
 		<table class="table table-bordered table-condensed table-striped">
 			<tr>
 				<th>Chip No</th>
 				<th>Nombre</th>
 				<th>Apellido</th>
-				<th>Chip Time</th>
-				<th>Time</th>
 				<th>Genero</th>
 				<th>Distancia (Cronometro)</th>
 				<th>Categoria</th>
 
 			</tr>
 			<tbody id="tableRace">
-				<tr th:each=" t : ${tags}">
+				<tr th:each=" t : ${tagRunners}">
 
 					<td th:text="${t.position}"></td>
 					<td th:text="${t.firstName}"></td>
 					<td th:text="${t.lastName}"></td>
-					<td th:text="${t.time}"></td>
-					<td th:text="${t.passTime}"></td>
 					<td th:text="${t.gender}"></td>
 					<td th:text="${t.distance}"></td>
 					<td th:text="${t.category}"></td>
+					<td th:each="h : ${t.timeTags}" th:text="${h}"></td>
 				</tr>
 			</tbody>
 
@@ -143,7 +141,7 @@ function updateTable(){
 $(document).ready(function(){
 	updateTranscurrido();
 	setInterval(updateTranscurrido,1000);
-	setInterval(updateTable, 1000);	
+// 	setInterval(updateTable, 1000);	
 })
 
 function checkTime(i) {
