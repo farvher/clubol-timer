@@ -133,13 +133,13 @@ public class RaceController {
 		Tags tag = new Tags();
 		tag.setNoAerial(1L);
 		tag.setRunDate("2017-04-23");
-		tag.setTime("11:12:22");
+		tag.setTime("18:12:22");
 		tag.setNoTag(60L);
 		tagService.saveTag(tag);
 		Tags tag2 = new Tags();
 		tag2.setNoAerial(1L);
 		tag2.setRunDate("2017-04-23");
-		tag2.setTime("10:30:22");
+		tag2.setTime("19:30:22");
 		tag2.setNoTag(30L);
 		tagService.saveTag(tag2);
 		return "guardado";

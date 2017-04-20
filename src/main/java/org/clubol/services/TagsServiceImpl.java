@@ -113,23 +113,23 @@ public class TagsServiceImpl implements TagsService {
 
 	private String compareTime(String category, String time) {
 
-		String timeCr;
 		Chronometer cr = chronometerService.findFirstByChronometerName(category);
-		try {
-			if (cr != null) {
-				timeCr = cr.getTimeStart();
-				Date crDate = sdf.parse(timeCr);
-				Date timeDate = sdf.parse(time);
-
-				if (crDate.before(timeDate)) {
-					Long seconds = (timeDate.getTime() - crDate.getTime()) / 1000;
-					return convertSecondsToHHMMSS(seconds).toString();
-				}
-			}
-		} catch (Exception ex) {
-			return "error";
+		if(cr!=null){
+		return getDiferenceTime(cr.getTimeStart(), time);
 		}
-		return time;
+		return "Categoria no encontrada";
+	}
+
+	private String getDiferenceTime(String firsTime, String lastTime) {
+		Date firstTimeDate = parseDate(firsTime);
+		Date lastTimeDate = parseDate(lastTime);
+
+		if (firstTimeDate.before(lastTimeDate)) {
+			Long seconds = (lastTimeDate.getTime() - firstTimeDate.getTime()) / 1000;
+			return convertSecondsToHHMMSS(seconds).toString();
+		} else {
+			return "Mayor que Cronometro";
+		}
 	}
 
 	private String convertSecondsToHHMMSS(long seconds) {
