@@ -47,7 +47,7 @@
 
 		</div>
 
-		<table class="table table-bordered table-condensed table-striped">
+		<table class="table table-bordered  table-striped">
 			<tr>
 				<th>Chip No</th>
 				<th>Nombre</th>
@@ -55,6 +55,7 @@
 				<th>Genero</th>
 				<th>Distancia (Cronometro)</th>
 				<th>Categoria</th>
+				<th>tiempos</th>
 
 			</tr>
 			<tbody id="tableRace">
@@ -66,7 +67,7 @@
 					<td th:text="${t.gender}"></td>
 					<td th:text="${t.distance}"></td>
 					<td th:text="${t.category}"></td>
-					<td th:each="h : ${t.timeTags}" th:text="${h}"></td>
+					<td><div th:each="h : ${t.timeTags}" th:text="${h}"></div></td>
 				</tr>
 			</tbody>
 
@@ -109,7 +110,7 @@
 
 function updateTable(){
 	var raceName = $("#raceName").val()
-	var url ="/race/"+raceName+"/ajax"
+	var url ="/raceRunner/"+raceName+"/ajax"
 	$.ajax({
 		url : url,
 		dataType : "json",
@@ -120,11 +121,14 @@ function updateTable(){
 				register+="<td>"+o.position+"</td>";
 				register+="<td>"+o.firstName+"</td>";
 				register+="<td>"+o.lastName+"</td>";
-				register+="<td>"+o.time+"</td>";
-				register+="<td>"+o.passTime+"</td>";
 				register+="<td>"+o.gender+"</td>";
 				register+="<td>"+o.distance+"</td>";
 				register+="<td>"+o.category+"</td>";
+				register+="<td>";
+				for(k in o.timeTags){
+					register+="<div>"+o.timeTags[k]+"</div>"
+					}
+				register+="</td>"
 				register+="</tr>";
 				$("#tableRace").append(register);
 				})
@@ -141,7 +145,7 @@ function updateTable(){
 $(document).ready(function(){
 	updateTranscurrido();
 	setInterval(updateTranscurrido,1000);
-// 	setInterval(updateTable, 1000);	
+	setInterval(updateTable, 1000);	
 })
 
 function checkTime(i) {
@@ -199,8 +203,7 @@ function updateTranscurrido(){
 	
 	$(".timepass").each(function(i,o){
 		$(this).html(lapse[i]);
-		
-	})
+	});
 	
 }
 

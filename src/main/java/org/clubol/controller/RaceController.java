@@ -97,14 +97,19 @@ public class RaceController {
 		model.addAttribute("tagRunners", tagService.findRunnerAndTags());
 		return "raceTimes";
 	}
+	
+	@RequestMapping(value = "/raceRunner/{raceName}/ajax")
+	@ResponseBody
+	public String getRaceRunnerViewAjax(Model model, @PathVariable String raceName) {
+		Race race = raceService.findByRaceName(raceName);
+		if (race==null) {
+			return gson.toJson(new ArrayList<RaceDto>());
+		}
+		List<RaceDto> raceDtoList = tagService.findRunnerAndTags();
+		return gson.toJson(raceDtoList);
+	}
 
 
-//	@RequestMapping(value = "/race/{raceName}/tag/{tag}")
-//	public String getRaceViewByTag(Model model, @PathVariable String raceName, @PathVariable Long tag) {
-//		model.addAttribute("tags", tagService.findByNoTag(tag));
-//		model.addAttribute("race", raceService.findByRaceName(raceName).get(0));
-//		return raceView;
-//	}
 
 	/**
 	 * 
