@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.clubol.entity.Tags;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 @Repository
 public interface TagsRepository extends JpaRepository<Tags,Long>{
@@ -16,5 +17,9 @@ public interface TagsRepository extends JpaRepository<Tags,Long>{
 	List<Tags> findByNoAerial(Long noAerial);
 	
 	List<Tags> findByRunDate(String runDate);
+	
+	@Query(value = "SELECT no_tag FROM tags GROUP BY no_tag", nativeQuery = true)
+	List<Object> findTagGroupBy();
+	
 
 }

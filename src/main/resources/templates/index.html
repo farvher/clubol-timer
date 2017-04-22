@@ -26,9 +26,6 @@
 						<td>imprimir grilla segun el formato</td>
 					</tr>
 					<tr>
-						<td>organizar grilla por categorias, distancia y generos</td>
-					</tr>
-					<tr>
 						<td>Componente para enviar correo</td>
 					</tr>
 
@@ -42,7 +39,7 @@
 				<div class="panel-heading">Carreras</div>
 				<div class="panel-body">
 					<a th:each=" r : ${races}" type="button"
-						th:href="|/race/${r.raceName}|" class="list-group-item"
+						th:href="|/raceRunner/${r.raceName}|" class="list-group-item"
 						th:utext="${r.raceName}"></a>
 
 				</div>

@@ -3,6 +3,7 @@ package org.clubol.services;
 import java.util.List;
 
 import org.clubol.entity.Runner;
+import org.springframework.data.domain.Pageable;
 
 public interface RunnerService {
 	
@@ -11,6 +12,11 @@ public interface RunnerService {
 	void saveRunner(Runner runner);
 	
 	List<Runner> findAll();
+	
+	List<Runner> findByDistanceAndGender(String distance, String gender);
+	
+	List<Runner> findByCategory(String category);
+	
 
 	List<Runner> findByDocumentOrFirstNameOrLastName(String document,String firtsName, String lastName);
 
@@ -29,6 +35,8 @@ public interface RunnerService {
 	List<Object[]> findDuplicatePositions();
 
 	List<Runner> findByPositionAll(Long id);
+	
+	List<Runner> findAllPageable(Pageable page);
 	
 
 }

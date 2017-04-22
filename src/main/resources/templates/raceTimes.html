@@ -39,9 +39,40 @@
 						</div>
 						<div class="col-md-1 timepass">0:00:00</div>
 					</div>
+				</div>
+				<div class="panel-footer">
+					<form class="form-inline">
+						<div class="form-group">
+							<label>Distancias:</label> 
+							<select class="form-control" id="distance-filter">
+								<option value="">Todas</option>
+								<option th:each="cr : ${race.chronometers}"
+									th:text="${cr.chronometerName}"
+									th:value="${cr.chronometerName}"></option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Genero:</label>
+							<select class="form-control" id="gender-filter">
+							<option value="">Todas</option>
+							<option value="Masculino">Masculino</option>
+							<option value="Femenino">Femenino</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Categoria:</label>
+							<select class="form-control" id="category-filter" onchange="byCategory()">
+								<option value="">Todas</option>
+								<option th:each="c : ${categories}"
+									th:text="${c.name}"
+									th:value="${c.name}"></option>
+							</select>
+						</div>
+						<div class="form-group">
+						<label id="actual-filter">Filtro Todos</label>
+						</div>
 
-
-
+					</form>
 				</div>
 			</div>
 
@@ -49,24 +80,30 @@
 
 		<table class="table table-bordered  table-striped">
 			<tr>
+				<th>#</th>
 				<th>Chip No</th>
 				<th>Nombre</th>
-				<th>Apellido</th>
+<!-- 				<th>Apellido</th> -->
 				<th>Genero</th>
 				<th>Distancia (Cronometro)</th>
 				<th>Categoria</th>
-				<th>tiempos</th>
+				<th>Chronometro inicio</th>
+				<th>Tiempo</th>
+				<th>cant tags</th>
 
 			</tr>
 			<tbody id="tableRace">
-				<tr th:each=" t : ${tagRunners}">
-
+				<tr th:each=" t ,i : ${tagRunners}"
+					th:class="${t.active}? 'success':'warning'">
+					<td th:text="${i.count}"></td>
 					<td th:text="${t.position}"></td>
 					<td th:text="${t.firstName}"></td>
-					<td th:text="${t.lastName}"></td>
+<!-- 					<td th:text="${t.lastName}"></td> -->
 					<td th:text="${t.gender}"></td>
 					<td th:text="${t.distance}"></td>
 					<td th:text="${t.category}"></td>
+					<td th:text="${t.distanceTime}"></td>
+					<td th:text="${t.bestTime}"></td>
 					<td><div th:each="h : ${t.timeTags}" th:text="${h}"></div></td>
 				</tr>
 			</tbody>
@@ -77,144 +114,176 @@
 	</div>
 
 	<script>
+		function setTimeStart(btn) {
 
-	function setTimeStart(btn){
-		
-		var today = new Date();
-		  var h = today.getHours();
-		  var m = today.getMinutes();
-		  var s = today.getSeconds();
-		  // add a zero in front of numbers<10
-		  m = checkTime(m);
-		  s = checkTime(s);
-		  var timeStart = h+":"+m+":"+s;
-		  $(btn).html(timeStart);
-		  var idCrono = $(btn).val();
-		  saveCronometerTimeStart(idCrono,timeStart,"0");
+			var today = new Date();
+			var h = today.getHours();
+			var m = today.getMinutes();
+			var s = today.getSeconds();
+			// add a zero in front of numbers<10
+			m = checkTime(m);
+			s = checkTime(s);
+			var timeStart = h + ":" + m + ":" + s;
+			$(btn).html(timeStart);
+			var idCrono = $(btn).val();
+			saveCronometerTimeStart(idCrono, timeStart, "0");
 		}
 
-	function setTimeEnd(btn){
-		
-		var today = new Date();
-		  var h = today.getHours();
-		  var m = today.getMinutes();
-		  var s = today.getSeconds();
-		  // add a zero in front of numbers<10
-		  m = checkTime(m);
-		  s = checkTime(s);
-		  var timeEnd = h+":"+m+":"+s;
-		  $(btn).html(timeEnd);
-		  var idCrono = $(btn).val();
-		  saveCronometerTimeStart(idCrono,"0",timeEnd);
+		function setTimeEnd(btn) {
+
+			var today = new Date();
+			var h = today.getHours();
+			var m = today.getMinutes();
+			var s = today.getSeconds();
+			// add a zero in front of numbers<10
+			m = checkTime(m);
+			s = checkTime(s);
+			var timeEnd = h + ":" + m + ":" + s;
+			$(btn).html(timeEnd);
+			var idCrono = $(btn).val();
+			saveCronometerTimeStart(idCrono, "0", timeEnd);
 		}
 
-function updateTable(){
-	var raceName = $("#raceName").val()
-	var url ="/raceRunner/"+raceName+"/ajax"
-	$.ajax({
-		url : url,
-		dataType : "json",
-		success:function(data){
-			$("#tableRace").html("");
-			$.each(data,function(i,o){
-				var register = "<tr>";
-				register+="<td>"+o.position+"</td>";
-				register+="<td>"+o.firstName+"</td>";
-				register+="<td>"+o.lastName+"</td>";
-				register+="<td>"+o.gender+"</td>";
-				register+="<td>"+o.distance+"</td>";
-				register+="<td>"+o.category+"</td>";
-				register+="<td>";
-				for(k in o.timeTags){
-					register+="<div>"+o.timeTags[k]+"</div>"
-					}
-				register+="</td>"
-				register+="</tr>";
-				$("#tableRace").append(register);
-				})
-			
-       data;
-			},
-		error:function(){
-             	console.log("menu no cargado");
-             }
-		})
-}
+		function byCategory(){
+			$("#distance-filter").val("");
+			$("#gender-filter").val("")
+		}
+		
+		function getUrlPeticion() {
+			var raceName = $("#raceName").val();
+			var urlNormal = "/raceRunner/" + raceName + "/ajax";
+					
+			var categoryFilter=$("#category-filter").val();
+			var distanceFilter=$("#distance-filter").val();
+			var genderFilter = $("#gender-filter").val();
 
-
-$(document).ready(function(){
-	updateTranscurrido();
-	setInterval(updateTranscurrido,1000);
-	setInterval(updateTable, 1000);	
-})
-
-function checkTime(i) {
-	  if (i < 10) {
-	    i = "0" + i;
-	  }
-	  return i;
-	}
-
-function saveCronometerTimeStart(id,timeStart,timeEnd){
-
-	var url = "/chronometer/";
-	url+=id+"/";
-	url+=timeStart+"/";
-	url+=timeEnd+"";
-	var params="";
-	var func = function(data){
-		console.log(data);
-		};
-	sendAjax(url,params,func,"GET");
-	
-}
-
-function sendAjax(url,params,func,method){
-
-	$.ajax({
-		url : url,
-		data:params,
-		method:method,
-		data:JSON.stringify(params),
-		contentType:'application/json',
-		success:func,
-		error : function(er,ex,error){
-			alert("error ajax: "+er);
+			if(distanceFilter!="" && genderFilter!="" ){
+				$("#actual-filter").html("Filtro Unica : "+genderFilter+" "+distanceFilter);
+				return "/raceRunner/" + raceName+ "/"+distanceFilter+"/"+genderFilter+"/ajax"
+			}else if(categoryFilter!=""){
+				$("#actual-filter").html("Filtro Categoria : "+categoryFilter);
+				return "/raceRunner/" + raceName + "/"+categoryFilter+"/ajax";
+			}else {
+				$("#actual-filter").html("Filtro Todos");
+				return urlNormal;
+				
 			}
+
+		}
+
+		function updateTable() {
+			var raceName = $("#raceName").val()
+			var url = getUrlPeticion()
+			console.log(url)			
+			$.ajax({
+				url : url,
+				dataType : "json",
+				success : function(data) {
+					$("#tableRace").html("");
+					$.each(data, function(i, o) {
+						var register = "<tr class='"
+								+ (o.active ? "success" : "warning") + "'>";
+						register += "<td>" + (i + 1) + "</td>";
+						register += "<td>" + o.position + "</td>";
+						register += "<td>" + o.firstName + "</td>";
+// 						register += "<td>" + o.lastName + "</td>";
+						register += "<td>" + o.gender + "</td>";
+						register += "<td>" + o.distance + "</td>";
+						register += "<td>" + o.category + "</td>";
+						register += "<td>" + o.distanceTime + "</td>";
+						register += "<td>" + o.bestTime + "</td>";
+						register += "<td>";
+						for (k in o.timeTags) {
+							register += "<div>" + o.timeTags[k] + "</div>"
+						}
+						register += "</td>"
+						register += "</tr>";
+						$("#tableRace").append(register);
+					})
+
+					data;
+				},
+				error : function() {
+					console.log("menu no cargado");
+				}
+			})
+		}
+
+		$(document).ready(function() {
+			updateTranscurrido();
+			setInterval(updateTranscurrido, 1000);
+			setInterval(updateTable, 1000);
 		})
-}
 
-function updateTranscurrido(){
-	var lapse = [];
-	$(".timestart").each(function(){
-		var time = ($(this).html());
-		var hour = time.split(":")[0];
-		var minute = time.split(":")[1];
-		var second = time.split(":")[2];
-		var current = new Date();
-		current.setHours(hour);
-		current.setMinutes(minute);
-		current.setSeconds(second)
-		
-		var currentLocal = new Date();
-		var secondPass = (currentLocal.getTime() - current.getTime())/1000;
-		lapse.push(time!='0:00:00'?convertSecondsToHHMMSS(secondPass):'00:00:00');
-	})
-	
-	$(".timepass").each(function(i,o){
-		$(this).html(lapse[i]);
-	});
-	
-}
+		function checkTime(i) {
+			if (i < 10) {
+				i = "0" + i;
+			}
+			return i;
+		}
 
-function convertSecondsToHHMMSS(seconds){
-	var date = new Date(null);
-	date.setSeconds(seconds); // specify value for SECONDS here
-	return date.toISOString().substr(11, 8);
-	}
+		function saveCronometerTimeStart(id, timeStart, timeEnd) {
 
+			var url = "/chronometer/";
+			url += id + "/";
+			url += timeStart + "/";
+			url += timeEnd + "";
+			var params = "";
+			var func = function(data) {
+				console.log(data);
+			};
+			sendAjax(url, params, func, "GET");
 
+		}
 
-</script>
+		function sendAjax(url, params, func, method) {
+
+			$.ajax({
+				url : url,
+				data : params,
+				method : method,
+				data : JSON.stringify(params),
+				contentType : 'application/json',
+				success : func,
+				error : function(er, ex, error) {
+					alert("error ajax: " + er);
+				}
+			})
+		}
+
+		function updateTranscurrido() {
+			var lapse = [];
+			$(".timestart")
+					.each(
+							function() {
+								var time = ($(this).html());
+								var hour = time.split(":")[0];
+								var minute = time.split(":")[1];
+								var second = time.split(":")[2];
+								var current = new Date();
+								current.setHours(hour);
+								current.setMinutes(minute);
+								current.setSeconds(second)
+
+								var currentLocal = new Date();
+								var secondPass = (currentLocal.getTime() - current
+										.getTime()) / 1000;
+								lapse
+										.push(time != '0:00:00' ? convertSecondsToHHMMSS(secondPass)
+												: '00:00:00');
+							})
+
+			$(".timepass").each(function(i, o) {
+				$(this).html(lapse[i]);
+			});
+
+		}
+
+		function convertSecondsToHHMMSS(seconds) {
+			var date = new Date(null);
+			date.setSeconds(seconds); // specify value for SECONDS here
+			return date.toISOString().substr(11, 8);
+		}
+	</script>
 </body>
 </html>

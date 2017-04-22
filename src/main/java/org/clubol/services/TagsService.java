@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.clubol.dto.RaceDto;
+import org.clubol.entity.Runner;
 import org.clubol.entity.Tags;
 
 public interface TagsService {
@@ -20,6 +21,10 @@ public interface TagsService {
 
 	List<RaceDto> findByRace(String raceName);
 	
-	List<RaceDto> findRunnerAndTags();
+	List<RaceDto> findByRaceAndTag(String raceName,Long Tag);
+	
+	List<RaceDto> findRunnerAndTags(List<Runner> runers);
+	
+	void deleteTag(Long id);
 	
 }

@@ -10,6 +10,8 @@ public class RaceDto implements Serializable {
 	/**
 	 * 
 	 */
+	private Long id;
+	
 	private static final long serialVersionUID = 1L;
 
 	private String firstName;
@@ -22,6 +24,8 @@ public class RaceDto implements Serializable {
 	
 	private String passTime;
 	
+	private String bestTime;
+	
 	private List<String> timeTags;
 
 	private String category;
@@ -29,6 +33,8 @@ public class RaceDto implements Serializable {
 	private String position;
 	
 	private String distance;
+	
+	private String distanceTime;
 	
 	private boolean active;
 
@@ -114,6 +120,30 @@ public class RaceDto implements Serializable {
 
 	public void setTimeTags(List<String> timeTags) {
 		this.timeTags = timeTags;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getBestTime() {
+		return bestTime;
+	}
+
+	public void setBestTime(String bestTime) {
+		this.bestTime = bestTime;
+	}
+
+	public String getDistanceTime() {
+		return distanceTime;
+	}
+
+	public void setDistanceTime(String distanceTime) {
+		this.distanceTime = distanceTime;
 	}
 
 	

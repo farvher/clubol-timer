@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class TagsServiceImpl implements TagsService {
 	}
 
 	@Override
+
 	public List<Tags> findByNoAerial(Long noAerial) {
 		return tagRepository.findByNoAerial(noAerial);
 	}
@@ -75,6 +77,17 @@ public class TagsServiceImpl implements TagsService {
 
 		return getRaceDto(tags);
 	}
+	
+	@Override
+	public List<RaceDto> findByRaceAndTag(String raceName, Long Tag) {
+		List<Tags> tags = new ArrayList<>();
+		Race race = raceRepository.findFirstByRaceName(raceName);
+		if (race != null) {
+			tags = tagRepository.findByNoTag(Tag);
+		}
+
+		return getRaceDto(tags);
+	}
 
 	private List<RaceDto> getRaceDto(List<Tags> tags) {
 		List<RaceDto> raceDtoList = new ArrayList<>();
@@ -83,6 +96,7 @@ public class TagsServiceImpl implements TagsService {
 				Runner runner = runnerRepository.findFirstByPosition(t.getNoTag());
 				if (runner != null) {
 					RaceDto r = new RaceDto();
+					r.setId(t.getId());
 					r.setCategory(runner.getCategory());
 					r.setDistance(runner.getDistance());
 					r.setFirstName(runner.getFirstName());
@@ -95,6 +109,7 @@ public class TagsServiceImpl implements TagsService {
 					raceDtoList.add(r);
 				} else {
 					RaceDto r = new RaceDto();
+					r.setId(t.getId());
 					r.setCategory(UNKNOW);
 					r.setDistance(UNKNOW);
 					r.setFirstName(UNKNOW);
@@ -114,8 +129,8 @@ public class TagsServiceImpl implements TagsService {
 	private String compareTime(String category, String time) {
 
 		Chronometer cr = chronometerService.findFirstByChronometerName(category);
-		if(cr!=null){
-		return getDiferenceTime(cr.getTimeStart(), time);
+		if (cr != null) {
+			return getDiferenceTime(cr.getTimeStart(), time);
 		}
 		return "Categoria no encontrada";
 	}
@@ -145,24 +160,32 @@ public class TagsServiceImpl implements TagsService {
 	}
 
 	@Override
-	public List<RaceDto> findRunnerAndTags() {
+	public List<RaceDto> findRunnerAndTags(List<Runner> runners) {
 		List<RaceDto> tagRunner = new ArrayList<>();
-		List<Runner> runners = runnerRepository.findAll();
 		for (Runner runner : runners) {
-			List<Tags> listTags = tagRepository.findByNoTag(runner.getPosition());
-			RaceDto r = new RaceDto();
-			r.setCategory(runner.getCategory());
-			r.setDistance(runner.getDistance());
-			r.setFirstName(runner.getFirstName());
-			r.setGender(runner.getGender());
-			r.setLastName(runner.getLastName());
-			r.setPosition(runner.getPosition().toString());
-			r.setActive(runner.isActive());
-			r.setTimeTags(processTimeTags(listTags));
-			if (!r.getTimeTags().isEmpty()) {
-				tagRunner.add(r);
+			if (runner.isActive()) {
+				List<Tags> listTags = tagRepository.findByNoTag(runner.getPosition());
+				Chronometer chronometer = chronometerService.findFirstByChronometerName(runner.getDistance());
+				RaceDto r = new RaceDto();
+				r.setCategory(runner.getCategory());
+				r.setDistance(runner.getDistance());
+				r.setFirstName(runner.getFirstName());
+				r.setGender(runner.getGender());
+				r.setLastName(runner.getLastName());
+				r.setPosition(runner.getPosition().toString());
+				r.setActive(runner.isActive());
+				r.setTimeTags(processTimeTags(listTags));
+
+				if (chronometer != null ) {
+					r.setDistanceTime(chronometer.getTimeStart());
+					r.setBestTime(processBestime(r.getTimeTags(), chronometer.getTimeStart()));
+				}
+				if (!r.getTimeTags().isEmpty()) {
+					tagRunner.add(r);
+				}
 			}
 		}
+		sortByBestTime(tagRunner);
 		return tagRunner;
 	}
 
@@ -183,6 +206,30 @@ public class TagsServiceImpl implements TagsService {
 		return tagsProcessed;
 	}
 
+	private String processBestime(List<String> tagstimes, String categoryTime) {
+
+		if (tagstimes.size() > 1) {
+			String firstTime = categoryTime;
+			String lastTime = tagstimes.get(tagstimes.size() - 1);
+
+			return getDiferenceTime(categoryTime, lastTime);
+		}
+
+		return "sin marca aun";
+	}
+
+	private void sortByBestTime(List<RaceDto> raceList) {
+
+		Collections.sort(raceList, new Comparator<RaceDto>() {
+			@Override
+			public int compare(RaceDto o1, RaceDto o2) {
+				Date date1 = parseDate(o1.getBestTime());
+				Date date2 = parseDate(o2.getBestTime());
+				return date1.compareTo(date2);
+			}
+		});
+	}
+
 	private static Date parseDate(String strDate) {
 		try {
 			return sdf.parse(strDate);
@@ -190,5 +237,13 @@ public class TagsServiceImpl implements TagsService {
 		}
 		return new Date();
 	}
+
+	@Override
+	public void deleteTag(Long id) {
+		tagRepository.delete(id);
+
+	}
+
+	
 
 }

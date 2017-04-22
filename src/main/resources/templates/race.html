@@ -43,6 +43,13 @@
 
 
 				</div>
+				<div class="panel-footer">
+				<form class="form-inline">
+				<div class="form-group">
+				<input type ="text" placeholder="No Tag" id="noTagRace" class="form-control" />
+				</div>
+				</form>
+				</div>
 			</div>
 
 		</div>
@@ -56,10 +63,11 @@
 				<th>Genero</th>
 				<th>Distancia (Cronometro)</th>
 				<th>Categoria</th>
+				<th>Borrar</th>
 
 			</tr>
 			<tbody id="tableRace">
-				<tr th:each=" t : ${tags}">
+				<tr th:each=" t : ${tags}"  th:class="${t.active}? 'success':'warning'">
 
 					<td th:text="${t.position}"></td>
 					<td th:text="${t.firstName}"></td>
@@ -69,6 +77,7 @@
 					<td th:text="${t.gender}"></td>
 					<td th:text="${t.distance}"></td>
 					<td th:text="${t.category}"></td>
+					<td><a class="btn btn-xs btn-danger"  th:href="@{/tag/delete/}+${t.id}">Borrar</a></td>
 				</tr>
 			</tbody>
 
@@ -112,13 +121,15 @@
 function updateTable(){
 	var raceName = $("#raceName").val()
 	var url ="/race/"+raceName+"/ajax"
+	var noTag = $("#noTagRace").val();
+	url = noTag==""?url:url+"/"+noTag;
 	$.ajax({
 		url : url,
 		dataType : "json",
 		success:function(data){
 			$("#tableRace").html("");
 			$.each(data,function(i,o){
-				var register = "<tr>";
+				var register = "<tr class='"+(o.active?"success":"warning")+"'>";
 				register+="<td>"+o.position+"</td>";
 				register+="<td>"+o.firstName+"</td>";
 				register+="<td>"+o.lastName+"</td>";
@@ -127,6 +138,7 @@ function updateTable(){
 				register+="<td>"+o.gender+"</td>";
 				register+="<td>"+o.distance+"</td>";
 				register+="<td>"+o.category+"</td>";
+				register+="<td>"+"<a class='btn btn-xs btn-danger' href='/tag/delete/"+o.id+"'>Borrar</a>"+"</td>";
 				register+="</tr>";
 				$("#tableRace").append(register);
 				})

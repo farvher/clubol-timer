@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.clubol.dao.RunnerRepository;
+import org.clubol.dao.TagsRepository;
 import org.clubol.entity.Chronometer;
 import org.clubol.entity.Runner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RunnerServiceImpl  implements RunnerService{
 
+	
+	@Autowired
+	TagsRepository tagRepository;
 	
 	@Autowired
 	RunnerRepository runnerRepository;
@@ -76,6 +82,26 @@ public class RunnerServiceImpl  implements RunnerService{
 	@Override
 	public List<Object[]> findDuplicatePositions() {
 		return runnerRepository.findDuplicatePositions();
+	}
+
+	@Override
+	public List<Runner> findByDistanceAndGender(String distance, String gender) {
+		return runnerRepository.findByDistanceAndGender(distance, gender);
+	}
+
+	@Override
+	public List<Runner> findByCategory(String category) {
+		return runnerRepository.findByCategory(category);
+	}
+
+	@Override
+	public List<Runner> findAllPageable(Pageable page) {
+		List<Long> ids = new ArrayList<>();
+		List<Object> idsObject =tagRepository.findTagGroupBy(); 
+		for (Object  obj : idsObject){
+			ids.add((Long) obj);
+		}
+		return runnerRepository.findByPosition(ids,page).getContent(); 
 	}
 
 }
