@@ -37,6 +37,8 @@ public class RaceDto implements Serializable {
 	private String distanceTime;
 	
 	private boolean active;
+	
+	private String email;
 
 	public String getFirstName() {
 		return firstName;
@@ -144,6 +146,14 @@ public class RaceDto implements Serializable {
 
 	public void setDistanceTime(String distanceTime) {
 		this.distanceTime = distanceTime;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	

@@ -31,7 +31,7 @@ import com.google.gson.Gson;
 @Controller
 public class RaceController {
 
-	private static final int MAX_RUNNER = 15;
+	private static final int MAX_RUNNER = 20;
 
 	@Autowired
 	private RunnerService runnerService;
@@ -109,16 +109,18 @@ public class RaceController {
 		model.addAttribute("tagRunners", tagService.findRunnerAndTags(runers));
 		return "raceTimes";
 	}
+	
+	
 
-	@RequestMapping(value = "/raceRunner/{raceName}/ajax")
+	@RequestMapping(value = "/raceRunner/{raceName}/ajax/{cant}")
 	@ResponseBody
-	public String getRaceRunnerViewAjax(Model model, @PathVariable String raceName) {
+	public String getRaceRunnerViewAjax(Model model, @PathVariable String raceName,@PathVariable int cant) {
 		Race race = raceService.findByRaceName(raceName);
 		if (race == null) {
 			return gson.toJson(new ArrayList<RaceDto>());
 		}
-		Pageable page = new PageRequest(0, MAX_RUNNER);
-		List<Runner> runers = runnerService.findAll();
+		Pageable page = new PageRequest(0, cant);
+		List<Runner> runers = runnerService.findAllPageable(page);
 		List<RaceDto> raceDtoList = tagService.findRunnerAndTags(runers);
 		return gson.toJson(raceDtoList);
 	}

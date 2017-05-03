@@ -25,6 +25,8 @@ public interface TagsService {
 	
 	List<RaceDto> findRunnerAndTags(List<Runner> runers);
 	
+	List<RaceDto> findRunnerAndTagsEmail(List<Runner> runers);
+	
 	void deleteTag(Long id);
 	
 }

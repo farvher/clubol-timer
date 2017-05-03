@@ -175,6 +175,7 @@ public class TagsServiceImpl implements TagsService {
 				r.setPosition(runner.getPosition().toString());
 				r.setActive(runner.isActive());
 				r.setTimeTags(processTimeTags(listTags));
+//				r.setEmail(runner.getEmail());
 
 				if (chronometer != null ) {
 					r.setDistanceTime(chronometer.getTimeStart());
@@ -215,7 +216,19 @@ public class TagsServiceImpl implements TagsService {
 			return getDiferenceTime(categoryTime, lastTime);
 		}
 
-		return "sin marca aun";
+		return "No Results";
+	}
+	
+	private String processChiptime(List<String> tagstimes) {
+
+		if (tagstimes.size() > 1) {
+			String firstTime = tagstimes.get(0);
+			String lastTime = tagstimes.get(tagstimes.size() - 1);
+
+			return getDiferenceTime(firstTime, lastTime);
+		}
+
+		return "No Results";
 	}
 
 	private void sortByBestTime(List<RaceDto> raceList) {
@@ -242,6 +255,39 @@ public class TagsServiceImpl implements TagsService {
 	public void deleteTag(Long id) {
 		tagRepository.delete(id);
 
+	}
+
+	@Override
+	public List<RaceDto> findRunnerAndTagsEmail(List<Runner> runers) {
+		List<RaceDto> tagRunner = new ArrayList<>();
+		for (Runner runner : runers) {
+			if (runner.isActive()) {
+				List<Tags> listTags = tagRepository.findByNoTag(runner.getPosition());
+				Chronometer chronometer = chronometerService.findFirstByChronometerName(runner.getDistance());
+				RaceDto r = new RaceDto();
+				r.setCategory(runner.getCategory());
+				r.setDistance(runner.getDistance());
+				r.setFirstName(runner.getFirstName());
+//				r.setGender(runner.getGender());
+//				r.setLastName(runner.getLastName());
+				r.setPosition(runner.getPosition().toString());
+//				r.setActive(runner.isActive());
+				r.setTimeTags(processTimeTags(listTags));
+				r.setPassTime(processChiptime(r.getTimeTags()));
+				
+				r.setEmail(runner.getEmail());
+
+				if (chronometer != null ) {
+					r.setDistanceTime(chronometer.getTimeStart());
+					r.setBestTime(processBestime(r.getTimeTags(), chronometer.getTimeStart()));
+				}
+				if (!r.getTimeTags().isEmpty()) {
+					tagRunner.add(r);
+				}
+			}
+		}
+		//sortByBestTime(tagRunner);
+		return tagRunner;
 	}
 
 	

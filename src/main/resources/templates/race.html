@@ -48,6 +48,7 @@
 				<div class="form-group">
 				<input type ="text" placeholder="No Tag" id="noTagRace" class="form-control" />
 				</div>
+				<button class="btn btn-danger"  onclick="updateTable()" >Actualizar</button>
 				</form>
 				</div>
 			</div>
@@ -155,7 +156,7 @@ function updateTable(){
 $(document).ready(function(){
 	updateTranscurrido();
 	setInterval(updateTranscurrido,1000);
-	setInterval(updateTable, 1000);	
+// 	setInterval(updateTable, 1000);	
 })
 
 function checkTime(i) {

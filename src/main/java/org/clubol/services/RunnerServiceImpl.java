@@ -1,5 +1,6 @@
 package org.clubol.services;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.clubol.dao.TagsRepository;
 import org.clubol.entity.Chronometer;
 import org.clubol.entity.Runner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -97,11 +99,13 @@ public class RunnerServiceImpl  implements RunnerService{
 	@Override
 	public List<Runner> findAllPageable(Pageable page) {
 		List<Long> ids = new ArrayList<>();
-		List<Object> idsObject =tagRepository.findTagGroupBy(); 
-		for (Object  obj : idsObject){
-			ids.add((Long) obj);
+		List<Object> idsObject =tagRepository.findTagGroupBy();
+		for (Object o : idsObject){
+			BigInteger bi = (BigInteger) o;
+			ids.add(bi.longValue());
 		}
-		return runnerRepository.findByPosition(ids,page).getContent(); 
+		Page<Runner> pageList = runnerRepository.findByPositionIn(ids, page);
+		return pageList.getContent();
 	}
 
 }

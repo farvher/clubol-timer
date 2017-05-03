@@ -26,7 +26,7 @@ public interface RunnerRepository extends JpaRepository<Runner, Long> {
 	
 	Runner findFirstByDocument(String document);
 	
-	Page<Runner> findByPosition(List<Long> ids,Pageable pageable);
+	Page<Runner> findByPositionIn(List<Long> ids,Pageable pageable);
 	/**
 	 * Lista los corredores por distancia y genero 
 	 * para los de categoria unica

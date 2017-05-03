@@ -69,8 +69,13 @@
 							</select>
 						</div>
 						<div class="form-group">
+						<label>Mostrando:</label>
+						<input type="number" id="canti" value="10" placeholder="Cantidad resultados" class="form-control" />
+						</div>
+						<div class="form-group">
 						<label id="actual-filter">Filtro Todos</label>
 						</div>
+						<button onclick="updateTable()" class="btn btn-danger">Actualizar</button>
 
 					</form>
 				</div>
@@ -151,7 +156,9 @@
 		
 		function getUrlPeticion() {
 			var raceName = $("#raceName").val();
-			var urlNormal = "/raceRunner/" + raceName + "/ajax";
+			var cant = $("#canti").val();
+			cant = cant==""? 10:cant;
+			var urlNormal = "/raceRunner/" + raceName + "/ajax/"+cant;
 					
 			var categoryFilter=$("#category-filter").val();
 			var distanceFilter=$("#distance-filter").val();
@@ -212,7 +219,7 @@
 		$(document).ready(function() {
 			updateTranscurrido();
 			setInterval(updateTranscurrido, 1000);
-			setInterval(updateTable, 1000);
+			//setInterval(updateTable, 1000);
 		})
 
 		function checkTime(i) {
