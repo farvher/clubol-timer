@@ -67,7 +67,7 @@ public class RunnerServiceImpl  implements RunnerService{
 
 	@Override
 	public void delete(Long id) {
-		runnerRepository.delete(id);
+		runnerRepository.deleteById(id);
 		
 	}
 
