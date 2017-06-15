@@ -46,13 +46,13 @@ public class TagsController {
 
 	private Gson gson = new Gson();
 
-	@RequestMapping("/save/{noTag}/{time}")
+	@RequestMapping("/save/{noTag}/{time}/{runDate}")
 	@ResponseBody
-	private String newTag(@PathVariable String time, @PathVariable Long noTag) {
+	private String newTag(@PathVariable String time, @PathVariable Long noTag,@PathVariable String runDate) {
 		Tags t = new Tags();
 		t.setNoTag(noTag);
 		t.setNoAerial(1L);
-		t.setRunDate("2017-04-23");
+		t.setRunDate(runDate);
 		t.setTime(time);
 		tagService.saveTag(t);
 		return "GUARDADO";
@@ -109,14 +109,13 @@ public class TagsController {
 			r.setBestTime(runner.getBestTime());
 			r.setPassTime(runner.getPassTime());
 			r.setEmail(runner.getEmail());
-			sendMail(r);
+			return sendMail(r);
 		}
-		;
 
 		return "Enviado ";
 	}
 
-	public void sendMail(RaceDto r) {
+	public String sendMail(RaceDto r) {
 
 		Map<String, Object> model = new HashMap<String, Object>();
 
@@ -131,10 +130,12 @@ public class TagsController {
 		t.merge(ctx, writer);
 		try {
 			EnvioCorreo.enviarMensaje(writer.toString(), r.getEmail().trim());
+			return writer.toString();
 		} catch (Exception e) {
 			System.out.print(e.getMessage());
 
 		}
+		return "";
 
 	}
 

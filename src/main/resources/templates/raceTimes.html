@@ -17,6 +17,8 @@
 					<label th:text="${race.raceName}" class="">Carrera</label> <label
 						th:text="${race.description}">descripcion</label> <label
 						id="dateRace" th:utext="${race.dateRace}">dateRace</label>
+						<a th:href="@{/raceRunner/}+${race.raceName}" class="btn btn-default active">Tiempos Procesados</a>
+						<a th:href="@{/race/}+${race.raceName}" class="btn btn-default ">Tags leidos</a>
 				</div>
 				<div class="panel-body ">
 					<div class="row">
@@ -75,7 +77,7 @@
 						<div class="form-group">
 						<label id="actual-filter">Filtro Todos</label>
 						</div>
-						<button onclick="updateTable()" class="btn btn-danger">Actualizar</button>
+ 						<a onclick="tableToExcel('tableTimesRunners','tiempos corredores','tiempos_corredores.xls')" class="btn btn-info">Excel</a> 
 
 					</form>
 				</div>
@@ -83,7 +85,7 @@
 
 		</div>
 
-		<table class="table table-bordered  table-striped">
+		<table class="table table-bordered  table-striped" id="tableTimesRunners">
 			<tr>
 				<th>#</th>
 				<th>Chip No</th>
@@ -219,7 +221,7 @@
 		$(document).ready(function() {
 			updateTranscurrido();
 			setInterval(updateTranscurrido, 1000);
-			//setInterval(updateTable, 1000);
+			setInterval(updateTable, 2000);
 		})
 
 		function checkTime(i) {

@@ -16,7 +16,14 @@
 					<input type="hidden" th:value="${race.raceName}" id="raceName" />
 					<label th:text="${race.raceName}" class="">Carrera</label> <label
 						th:text="${race.description}">descripcion</label> <label
-						id="dateRace" th:utext="${race.dateRace}">dateRace</label>
+						id="dateRace" th:utext="${race.dateRace}">dateRace</label> <a
+						th:href="@{/raceRunner/}+${race.raceName}"
+						class="btn btn-default "
+						title="Calculo de los tiempos marcados por los corredores">Tiempos
+						Procesados</a> <a th:href="@{/race/}+${race.raceName}"
+						class="btn btn-default active"
+						title="Registro de todos los tiempos marcados sin calcular">Tags
+						leidos</a>
 				</div>
 				<div class="panel-body ">
 					<div class="row">
@@ -44,17 +51,24 @@
 
 				</div>
 				<div class="panel-footer">
-				<form class="form-inline">
-				<div class="form-group">
-				<input type ="text" placeholder="No Tag" id="noTagRace" class="form-control" />
-				</div>
-				<button class="btn btn-danger"  onclick="updateTable()" >Actualizar</button>
-				</form>
+					<form class="form-inline">
+						<div class="form-group">
+							<input type="text" placeholder="No Tag" id="noTagRace"
+								class="form-control" /> <input type="time" step="2" placeholder="Hora"
+								id="timeHour" class="form-control" />
+						</div>
+						<a class="btn btn-info" onclick="updateTable()"
+							title="actualiza los registros de tag segun el no de chip ingresado">Actualizar</a>
+						<a class="btn btn-info" onclick="saveTag()"
+							title="guarda un registro tag segun la hora indicada y el no del chip">Guardar</a>
+					<a onclick="tableToExcel('tableTimesRunners','tag detectados','tag_detectados.xls')" class="btn btn-info">Excel</a> 
+					</form>
+
 				</div>
 			</div>
 
 		</div>
-		<table class="table table-bordered table-condensed table-striped">
+		<table class="table table-bordered table-condensed table-striped" id="tableTimesRunners">
 			<tr>
 				<th>Chip No</th>
 				<th>Nombre</th>
@@ -68,7 +82,8 @@
 
 			</tr>
 			<tbody id="tableRace">
-				<tr th:each=" t : ${tags}"  th:class="${t.active}? 'success':'warning'">
+				<tr th:each=" t : ${tags}"
+					th:class="${t.active}? 'success':'warning'">
 
 					<td th:text="${t.position}"></td>
 					<td th:text="${t.firstName}"></td>
@@ -78,7 +93,8 @@
 					<td th:text="${t.gender}"></td>
 					<td th:text="${t.distance}"></td>
 					<td th:text="${t.category}"></td>
-					<td><a class="btn btn-xs btn-danger"  th:href="@{/tag/delete/}+${t.id}">Borrar</a></td>
+					<td><a class="btn btn-xs btn-danger"
+						href="#" th:onclick="'deleteTag(\'' + ${t.id} + '\');'">Borrar</a></td>
 				</tr>
 			</tbody>
 
@@ -139,7 +155,7 @@ function updateTable(){
 				register+="<td>"+o.gender+"</td>";
 				register+="<td>"+o.distance+"</td>";
 				register+="<td>"+o.category+"</td>";
-				register+="<td>"+"<a class='btn btn-xs btn-danger' href='/tag/delete/"+o.id+"'>Borrar</a>"+"</td>";
+				register+="<td>"+"<a class='btn btn-xs btn-danger' onclick='deleteTag("+o.id+")'>Borrar</a>"+"</td>";
 				register+="</tr>";
 				$("#tableRace").append(register);
 				})
@@ -218,6 +234,26 @@ function updateTranscurrido(){
 	})
 	
 }
+function saveTag(){
+var notag = $("#noTagRace").val();
+var hour = $("#timeHour").val();
+var dateRace =$("#dateRace").html();
+var functSave = function (data,status){ updateTable()};
+if(dateRace!='' && hour !='' && notag!=''){
+	hour = hour.substring(0,1)=='0' ? hour.substring(1,hour.length):hour
+sendAjax("/save/"+notag+"/"+hour+"/"+dateRace,null,functSave,'get');
+
+}else {
+	alert('Complete el tiempo y/o numero de chip')
+}
+}
+
+function deleteTag(id){
+	if(confirm('desea eliminar el tiempo?')){
+	sendAjax('/tag/delete/'+id,null,function(){updateTable()},'get');
+	}
+}
+
 
 function convertSecondsToHHMMSS(seconds){
 	var date = new Date(null);

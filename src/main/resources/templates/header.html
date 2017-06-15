@@ -45,10 +45,10 @@
 							data-toggle="dropdown" role="button" aria-haspopup="true"
 							aria-expanded="false">Utilitarios <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="/category/autosave">Agregar Categorias</a></li>
-								<li><a href="/distance/autosave">Agregar Distancias</a></li>
+								<li><a href="/category/autosave" title="Agrega categorias automaticamente">Agregar Categorias</a></li>
+								<li><a href="/distance/autosave" title="Agrega distancias(chronometros) automaticamente">Agregar Distancias</a></li>
 								<li role="separator" class="divider"></li>
-								<li><a href="/race/new">Nueva Carrera</a></li>
+								<li><a href="/race/new" title="Formulario para crear una carrera">Nueva Carrera</a></li>
 							</ul></li>
 
 					</ul>
@@ -57,7 +57,7 @@
 							<input type="number" onkeyup="changeActionSubmit(this.value)"
 								class="form-control" placeholder="Search">
 						</div>
-						<button type="submit" class="btn btn-default">Ver Tag</button>
+						<button type="submit" class="btn btn-default" title="Busca el registro del corredor por el numero del tag">Ver Tag</button>
 					</form>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#">Link</a></li>
@@ -91,6 +91,21 @@
 function changeActionSubmit(value){
 $("#searchTag").attr("action","/runners/tag/"+value+"");
 }
+
+var tableToExcel = (function(id) {
+	  var uri = 'data:application/vnd.ms-excel;base64,'
+	    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+	    , base64 = function(s) { return window.btoa(unescape(s)) }
+	    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	  return function(table, name,fileName) {
+	    if (!table.nodeType) table = document.getElementById(table)
+	    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+	    var a = document.createElement('a');
+	    a.href=uri + base64(format(template, ctx));
+	    a.download = fileName;
+	    a.click();
+	  }
+	})()
 
 </script>
 

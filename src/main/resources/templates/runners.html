@@ -23,6 +23,7 @@
 						 <a class="btn btn-default" href="/runner/new">Nuevo</a>
 						 
 						<a class="btn btn-default" href="/runner/duplicates">Duplicados</a>
+						<a class = "btn btn-default" onclick ="tableToExcel('tableRunners','corredores','corredores.xls')" href="#">Excel</a>
 				</form>
 			</div>
 		</div>
@@ -50,6 +51,7 @@
 					<th>Activo</th>
 					<th>Editar</th>
 					<th>Borrar</th>
+					<th>Correo</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -76,6 +78,9 @@
 						class="btn btn-warning btn-xs">Editar</a></td>
 					<td><a th:href="@{/runner/delete/}+${r.id}"
 						onclick="return validDelete(this)" class="btn btn-danger btn-xs">Borrar</a></td>
+						<td>
+						<a th:href="@{/massive/}+${r.position}" class="btn btn-default btn-xs" target="blank">Correo</a>
+						</td>
 				</tr>
 			</tbody>
 

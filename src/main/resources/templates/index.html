@@ -19,16 +19,13 @@
 					</tr>
 				</thead>
 				<tbody>
+					
 					<tr>
-						<td>configurable los tiempos</td>
+						<td>importar/exportar corredores y tiempos</td>
 					</tr>
 					<tr>
-						<td>imprimir grilla segun el formato</td>
+						<td>cambio en los nombres de las distancias</td>
 					</tr>
-					<tr>
-						<td>Componente para enviar correo</td>
-					</tr>
-
 				</tbody>
 			</table>
 		</div>
@@ -64,14 +61,24 @@
 				<div class="panel-body">
 					<div class="list-group">
 						<button th:each="d : ${distances}" type="button"
-							class="list-group-item" th:utext="${d.chronometerName}"></button>
+							onclick="cambiarNombreDistancia(this)" class="list-group-item"
+							th:utext="${d.chronometerName}" th:value="${d.id}"></button>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<script>
 
-<!-- 		<a th:href="@{/race/new}" href="#">Nueva Carrera</a> -->
+		function cambiarNombreDistancia(dist){
+		var newName = prompt("Ingrese el nombre del chronometro");
+
+
+	
+			}
+</script>
+
+		<!-- 		<a th:href="@{/race/new}" href="#">Nueva Carrera</a> -->
 	</div>
 </body>
 </html>
